@@ -32,7 +32,7 @@ class FilrougeApplicationTests {
     @Test
     void contextLoads() {
     }
-/*
+
 
     // Test Region
     @Test
@@ -58,6 +58,7 @@ class FilrougeApplicationTests {
         assertThat(object.getName ()).isEqualTo (RESULT);
     }
 
+/*
     // Test Department
     @Test
     public void department_FindAll() {
