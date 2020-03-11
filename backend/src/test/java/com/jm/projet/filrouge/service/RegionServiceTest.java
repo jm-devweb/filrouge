@@ -1,52 +1,85 @@
 package com.jm.projet.filrouge.service;
 
+import com.jm.projet.filrouge.dto.RegionDTO;
+import com.jm.projet.filrouge.mapper.RegionMapper;
 import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.repository.RegionRepository;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.util.ArrayList;
+
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 public class RegionServiceTest {
 
+    private RegionService regionService;
+
     @Mock
     RegionRepository regionRepo;
 
-    private RegionService regionService;
+    @Mock
+    RegionMapper regionMapper ;
 
     @BeforeEach
-    public void setUp() throws Exception {
-        regionService = new RegionService (regionRepo);
+    public  void SetUp() {
+        this.regionService = new RegionService(regionRepo, regionMapper);
     }
 
     @Test
-    public void findById() throws Exception {
-        given (regionRepo.findById (1L )).willReturn (Optional.of (new Region() ));
-        Optional<Region> region = regionService.findById ( 1L);
-        assertThat (region).isNotNull ( );
-    }
+    public void whenFindAll_thenReturnRegionList() {
+            // given
+            Region region = Region.builder()
+                    .name("Bourgogne")
+                    .build();
+            List<Region> expectedRegions = Arrays.asList(region);
+            doReturn(expectedRegions).when(regionRepo).findAll();
+
+            // when
+            List<RegionDTO> actualRegions = regionService.findAll();
+
+            // then
+            assertThat(actualRegions).isEqualTo(regionMapper.toListDTO (expectedRegions));
+        }
 
     @Test
-    public void findAll() throws Exception {
-        given (regionRepo.findAll ( )).willReturn (new ArrayList<> ( ));
-        List<Region> regions = regionService.findAll ( );
-        assertThat (regions).isNotNull ( );
+    public void whenFindById_thenReturnProduct() {
+        // given
+        Optional<Region> expectedRegion = Optional.of( Region.builder()
+                .name("Bourgogne")
+                .build());
+
+        doReturn(expectedRegion).when(regionRepo).findById (1L);
+
+        // when
+        RegionDTO actualRegion = regionService.findById (1L);
+
+        // then
+        assertThat(actualRegion).isEqualTo(regionMapper.toDTO (expectedRegion.get ()));
     }
 
+
     @Test
-    public void findRegionByName() throws Exception {
-        String name = "TEST" ;
-        given (regionRepo.findRegionByName (name)).willReturn (Optional.of (new Region() ));
-        Optional<Region> region = regionService.findRegionByName (name);
-        assertThat (region).isNotNull ( );
+    public void whenFindByName_thenReturnProduct() {
+        // given
+        Optional<Region> expectedRegion = Optional.of( Region.builder()
+                .name("Bourgogne")
+                .build());
+
+        doReturn(expectedRegion).when(regionRepo).findRegionByName ("Bourgogne");
+
+        // when
+        RegionDTO actualRegion = regionService.findRegionByName ("Bourgogne");
+
+        // then
+        assertThat(actualRegion).isEqualTo(regionMapper.toDTO (expectedRegion.get ()));
     }
+
 }

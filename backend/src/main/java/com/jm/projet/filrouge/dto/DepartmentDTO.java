@@ -18,8 +18,4 @@ public class DepartmentDTO {
     private String name;
 
     private Region region;
-
-    public interface OnCreate {}
-
-    public interface OnUpdate {}
 }

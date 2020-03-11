@@ -1,13 +1,12 @@
 package com.jm.projet.filrouge.model;
 
 import com.jm.projet.filrouge.common.jpa.AbstractEntity;
+import javax.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
-
 @Table(name="city")
-@Entity
 @AttributeOverride(name = "id", column = @Column(name = "ID_CITY"))
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -18,7 +17,6 @@ import javax.persistence.*;
 public class City extends AbstractEntity<Long> {
 
     @Column(name = "NAME", length = 255, nullable = false)
-    @EqualsAndHashCode.Include
     @ToString.Include
     private String name;
 

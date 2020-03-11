@@ -1,15 +1,12 @@
 package com.jm.projet.filrouge.model;
 
-
 import com.jm.projet.filrouge.common.jpa.AbstractEntity;
+import javax.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
-
-
 @Table(name="poi")
-@Entity
 @AttributeOverride(name = "id", column = @Column(name = "ID_POI"))
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

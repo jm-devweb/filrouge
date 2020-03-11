@@ -11,13 +11,8 @@ import lombok.*;
 @Getter
 public class RegionDTO {
 
-  //  @Null(groups = OnCreate.class, message = "{validation.Region.creation.id.invalid}")
- //   @NotNull(groups = OnUpdate.class, message = "{validation.Region.update.id.invalid}")
     private Long id;
 
     private String name;
 
-  public interface OnCreate {}
-
-  public interface OnUpdate {}
 }

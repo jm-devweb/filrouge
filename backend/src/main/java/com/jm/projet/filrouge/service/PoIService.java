@@ -2,13 +2,11 @@ package com.jm.projet.filrouge.service;
 
 import com.jm.projet.filrouge.dto.PoIDTO;
 import com.jm.projet.filrouge.mapper.PoIMapper;
-import com.jm.projet.filrouge.mapper.RegionMapper;
 import com.jm.projet.filrouge.model.PoI;
 import com.jm.projet.filrouge.repository.PoIRepository;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

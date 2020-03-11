@@ -1,11 +1,8 @@
 package com.jm.projet.filrouge.dto;
 
 import com.jm.projet.filrouge.model.Department;
-import com.jm.projet.filrouge.model.Region;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
-
-import javax.persistence.Column;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,8 +24,6 @@ public class CityDTO {
 
     private Department department;
 
-    public interface OnCreate {}
 
-    public interface OnUpdate {}
 
 }

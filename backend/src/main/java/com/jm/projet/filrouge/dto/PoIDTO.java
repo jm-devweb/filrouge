@@ -1,6 +1,5 @@
 package com.jm.projet.filrouge.dto;
 
-
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 
@@ -11,11 +10,8 @@ import lombok.*;
 @Setter
 @Getter
 public class PoIDTO {
+
     private Long id;
 
     private String name;
-
-    public interface OnCreate {}
-
-    public interface OnUpdate {}
 }
