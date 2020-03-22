@@ -1,7 +1,9 @@
 package com.jm.projet.filrouge.controller;
 
 import com.jm.projet.filrouge.dto.RegionDTO;
+import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.service.RegionService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,12 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,10 +45,11 @@ public class RegionControllerTest {
 
     @Test
     void whenFindAll_thenReturnRegionList() throws Exception {
-        RegionDTO region = RegionDTO.builder()
-                .name("Bourgogne")
+        RegionDTO regionDTO = RegionDTO.builder()
+                .id (1L)
+                .name("Auvergne-Rhône-Alpes")
                 .build();
-        List<RegionDTO> expectedRegions = Arrays.asList(region);
+        List<RegionDTO> expectedRegions = Arrays.asList(regionDTO);
 
         given(regionService.findAll ()).willReturn(expectedRegions);
 
@@ -58,25 +58,25 @@ public class RegionControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("Bourgogne")));
+                .andExpect(jsonPath("$[0].name", is("Auvergne-Rhône-Alpes")));
 
      }
 
 
     @Test
     void whenFindById_thenReturnRegion() throws Exception {
-        RegionDTO region = RegionDTO.builder()
-                .name("Bourgogne")
+        RegionDTO regionDTO = RegionDTO.builder()
+                .id (1L)
+                .name("Auvergne-Rhône-Alpes")
                 .build();
 
-        given(regionService.findById (1L)).willReturn(region);
+        given(regionService.findById (1L)).willReturn(regionDTO);
 
         mockMvc.perform(get("/api/regions/1")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("name", is("Bourgogne")));
+                .andExpect(jsonPath("name", is("Auvergne-Rhône-Alpes")));
     }
-
 }

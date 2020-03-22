@@ -1,10 +1,5 @@
 package com.jm.projet.filrouge.common.web;
 
-import com.jm.projet.filrouge.common.jpa.AbstractEntity;
-import com.jm.projet.filrouge.dto.RegionDTO;
-import com.jm.projet.filrouge.model.Region;
-
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,7 +8,7 @@ import java.util.List;
  * @param <E> Entity object
  * @param <D> DTO object
  */
-public interface EntityDTOMapper<E extends AbstractEntity, D> {
+public interface EntityDTOMapper<E , D> {
 
     /**
      * Convert the <code>D</code> DTO object to its corresponding entity <code>E</code>.
@@ -32,4 +27,6 @@ public interface EntityDTOMapper<E extends AbstractEntity, D> {
     public D toDTO(E entity);
 
     public List<D> toListDTO(List<E> entity);
+
+    public List<E> toListEntity(List<D> dto);
 }

@@ -1,50 +1,42 @@
 package com.jm.projet.filrouge.service;
 
+import com.jm.projet.filrouge.dto.DepartmentDTO;
+import com.jm.projet.filrouge.dto.RegionDTO;
+import com.jm.projet.filrouge.mapper.DepartmentMapper;
+import com.jm.projet.filrouge.mapper.RegionMapper;
 import com.jm.projet.filrouge.model.Department;
 import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.repository.DepartmentRepository;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
+    private final DepartmentMapper departmentMapper;
 
-    public DepartmentService(DepartmentRepository departmentRepository) {
-        this.departmentRepository = departmentRepository;
+    public DepartmentDTO findById(Long departmentId) {
+        Optional<Department> found = departmentRepository.findById(departmentId);
+        return found.isPresent () ? departmentMapper.INSTANCE.toDTO (found.get ()) :  null ;
     }
 
-    /**
-     * Get a {@link Region} with the given id
-     *
-     * @param departmentId
-     * @return a {@link Region} matching the given id or null if no Region matches the given id
-     */
-    public Optional<Department> findById(Long departmentId) {
-        return departmentRepository.findById(departmentId)   ;
+    public List<DepartmentDTO> findAll() {
+        List<Department> found = departmentRepository.findAll();
+        return departmentMapper.INSTANCE.toListDTO (found) ;
     }
 
-    /**
-     * Get All
-     *
-     * @return all {@link Region}
-     */
-    public List<Department> findAll() {
-        return departmentRepository.findAll ()   ;
+     public List<DepartmentDTO> findDepartmentsByRegionId(Long id) {
+         List<Department> found = departmentRepository.findDepartmentsByRegionId (id);
+         return departmentMapper.INSTANCE.toListDTO (found) ;
     }
-
-    public List<Department> findDepartmentsByRegionId(Long regionId) {
-        return departmentRepository.findDepartmentsByRegionId (regionId)   ;
-    }
-
-    public Optional<Department> findDepartmentByName(String department) {
-        return departmentRepository.findDepartmentByName (department)   ;
-    }
-
 
 }

@@ -3,6 +3,7 @@ package com.jm.projet.filrouge.repository;
 import com.jm.projet.filrouge.model.City;
 import com.jm.projet.filrouge.model.Department;
 import com.jm.projet.filrouge.model.Region;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,16 +11,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
 @AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
-
 public class CityRepositoryTest {
 
     @Autowired
@@ -29,26 +27,29 @@ public class CityRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    public void findById() throws Exception {
+    public void should_find_ById() throws Exception {
         final Long PARAM = 1L ;
-        final String RESULT = "Paris" ;
+        final String RESULT = "OZAN" ;
 
         Optional<City> city = this.cityRepo.findById (PARAM);
         assertThat(city.get().getName ()).isEqualTo(RESULT);
     }
 
     @Test
-    public void findAll() throws Exception {
-        final String RESULT = "Paris" ;
+    public void should_find_all_cities() throws Exception {
+        // when
+        Iterable<City> actual = this.cityRepo.findAll();
 
-        List<City> cities = this.cityRepo.findAll();
-        assertThat(cities.get(0).getName ()).isEqualTo(RESULT);
+        // then
+        assertThat(actual)
+                .hasSize(36568)
+                .doesNotContainNull();
     }
 
     @Test
-    public void findCitiesByDepartmentId() throws Exception {
+    public void should_find_all_citiesByRegionId() throws Exception {
         final Long PARAM = 1L ;
-        final String RESULT = "Paris" ;
+        final String RESULT = "OZAN" ;
 
         List<City> cities = this.cityRepo.findCitiesByDepartmentId(PARAM);
         assertThat(cities.get(0).getName ()).isEqualTo(RESULT);

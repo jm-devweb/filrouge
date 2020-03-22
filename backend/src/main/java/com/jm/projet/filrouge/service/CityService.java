@@ -1,48 +1,39 @@
 package com.jm.projet.filrouge.service;
 
+import com.jm.projet.filrouge.dto.CityDTO;
+import com.jm.projet.filrouge.dto.DepartmentDTO;
+import com.jm.projet.filrouge.mapper.CityMapper;
 import com.jm.projet.filrouge.model.City;
 import com.jm.projet.filrouge.model.Department;
-import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.repository.CityRepository;
-import com.jm.projet.filrouge.repository.DepartmentRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CityService {
 
     private final CityRepository cityRepository;
+    private final CityMapper cityMapper;
 
-    public CityService(CityRepository cityRepository) {
-        this.cityRepository = cityRepository;
+    public CityDTO findById(Long cityId) {
+        Optional<City> found = cityRepository.findById(cityId);
+        return found.isPresent () ? cityMapper.INSTANCE.toDTO (found.get ()) :  null ;
     }
 
-    /**
-     * Get a {@link Region} with the given id
-     *
-     * @param departmentId
-     * @return a {@link Region} matching the given id or null if no Region matches the given id
-     */
-    public Optional<City> findById(Long cityId) {
-        return cityRepository.findById(cityId)   ;
+    public List<CityDTO> findAll() {
+        List<City> found = cityRepository.findAll();
+        return cityMapper.INSTANCE.toListDTO (found) ;
     }
 
-    /**
-     * Get All
-     *
-     * @return all {@link Region}
-     */
-    public List<City> findAll() {
-        return cityRepository.findAll ()   ;
+    public List<CityDTO> findCitiesByDepartmentId(Long id) {
+        List<City> found = cityRepository.findCitiesByDepartmentId (id);
+        return cityMapper.INSTANCE.toListDTO (found) ;
     }
-
-    public List<City> findCitiesByDepartmentId(Long departmentId) {
-        return cityRepository.findCitiesByDepartmentId (departmentId)   ;
-    }
-
-
 }

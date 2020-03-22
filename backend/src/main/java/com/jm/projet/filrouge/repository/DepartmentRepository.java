@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
     List<Department> findDepartmentsByRegionId(Long id);
-    Optional<Department> findDepartmentByName(String name);
+
 }
 

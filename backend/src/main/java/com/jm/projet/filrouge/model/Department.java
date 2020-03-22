@@ -1,26 +1,29 @@
 package com.jm.projet.filrouge.model;
 
-import com.jm.projet.filrouge.common.jpa.AbstractEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import lombok.*;
 
 @Table(name="department")
 @AttributeOverride(name = "id", column = @Column(name = "ID_DEPARTMENT"))
+
+@Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true, onlyExplicitlyIncluded = true)
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@Setter
-@Getter
-public class Department  extends AbstractEntity<Long> {
+public class Department {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "NAME", length = 255, nullable = false, unique = true)
-    @ToString.Include
     private String name;
 
-    @EqualsAndHashCode.Include
     @ManyToOne
     private Region region;
 }

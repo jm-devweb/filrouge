@@ -1,6 +1,8 @@
 package com.jm.projet.filrouge.repository;
 
 import com.jm.projet.filrouge.model.Department;
+
+import com.jm.projet.filrouge.model.Region;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,10 +10,8 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
 import java.util.List;
 import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -26,38 +26,37 @@ public class DepartmentRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    public void findById() throws Exception {
+    public void should_find_ById() throws Exception {
         final Long PARAM = 1L ;
-        final String RESULT = "Paris" ;
+        Department department = new Department(1L,"Ain",new Region(1L,"Auvergne-Rhône-Alpes"));
 
-        Optional<Department> departmentOpt = this.departmentRepository.findById (PARAM);
-        assertThat(departmentOpt.get().getName ()).isEqualTo(RESULT);
+        Optional<Department> find = this.departmentRepository.findById (PARAM);
+        assertThat(find.get()).isEqualTo(department);
     }
 
     @Test
-    public void findAll() throws Exception {
-        final String RESULT = "Paris" ;
+    public void should_find_all_department() throws Exception {
 
-        List<Department> departments = this.departmentRepository.findAll();
-        assertThat(departments.get(0).getName ()).isEqualTo(RESULT);
+        // when
+        Iterable<Department> actual = this.departmentRepository.findAll();
+
+        // then
+        assertThat(actual)
+                .hasSize(95)
+                .doesNotContainNull();
     }
 
     @Test
-    public void findDepartmentsByRegionId() throws Exception {
+    public void should_find_all_departmentByRegionId() throws Exception {
         final Long PARAM = 1L ;
-        final String RESULT = "Paris" ;
 
-        List<Department> departments = this.departmentRepository.findDepartmentsByRegionId(PARAM);
-        assertThat(departments.get(0).getName ()).isEqualTo(RESULT);
+        // when
+        Iterable<Department> actual = this.departmentRepository.findDepartmentsByRegionId (PARAM);
+
+        // then
+        assertThat(actual)
+                .hasSize(12)
+                .doesNotContainNull();
     }
-
-    @Test
-    public void findDepartmentByName() throws Exception {
-        final String RESULT = "Paris" ;
-
-        Optional<Department> departmentOpt = this.departmentRepository.findDepartmentByName (RESULT);
-        assertThat(departmentOpt.get().getName ()).isEqualTo(RESULT);
-    }
-
 
 }

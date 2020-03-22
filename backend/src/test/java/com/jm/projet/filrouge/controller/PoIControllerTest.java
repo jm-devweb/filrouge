@@ -1,33 +1,34 @@
 package com.jm.projet.filrouge.controller;
 
-import com.jm.projet.filrouge.service.DepartmentService;
+import com.jm.projet.filrouge.dto.PoIDTO;
+import com.jm.projet.filrouge.dto.RegionDTO;
+import com.jm.projet.filrouge.model.Trip;
+import com.jm.projet.filrouge.model.User;
 import com.jm.projet.filrouge.service.PoIService;
-import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.annotation.Before;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
-
-import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
+import java.util.Arrays;
+import java.util.List;
+import static org.hamcrest.CoreMatchers.is;
+import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
 @AutoConfigureMockMvc
-@WebMvcTest(controllers = PoIController.class)
+@WebMvcTest(PoIController.class)
 public class PoIControllerTest {
 
     @Autowired
@@ -47,9 +48,44 @@ public class PoIControllerTest {
     }
 
     @Test
-    void emptyFindAll() throws Exception {
-        when(this.poiService.findAll ()).thenReturn(new ArrayList<> ());
-        this.mockMvc.perform(get("/api/pois")).andExpect(status().isNoContent ());
+    void whenFindAll_thenReturnPoIList() throws Exception {
+        PoIDTO poi = PoIDTO.builder()
+                .id (1L)
+                .name ("Cinéma")
+                .trips (new ArrayList<Trip> ( ))
+                .users (new ArrayList<User> ( ))
+                .build();
+        List<PoIDTO> expectedPoIs = Arrays.asList(poi);
+
+        given(poiService.findAll ()).willReturn(expectedPoIs);
+
+        mockMvc.perform(get("/api/pois")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$[0].name", is("Cinéma")));
+
+    }
+
+
+    @Test
+    void whenFindById_thenReturnPoI() throws Exception {
+        PoIDTO poi = PoIDTO.builder()
+                .id (1L)
+                .name ("Cinéma")
+                .trips (new ArrayList<Trip> ( ))
+                .users (new ArrayList<User> ( ))
+                .build();
+
+        given(poiService.findById (1L)).willReturn(poi);
+
+        mockMvc.perform(get("/api/pois/1")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content()
+                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("name", is("Cinéma")));
     }
 
 

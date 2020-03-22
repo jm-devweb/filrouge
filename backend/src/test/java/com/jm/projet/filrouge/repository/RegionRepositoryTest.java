@@ -1,7 +1,6 @@
 package com.jm.projet.filrouge.repository;
 
 import com.jm.projet.filrouge.model.Region;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +8,9 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import java.util.List;
+
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -25,36 +25,24 @@ public class RegionRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    public void findById() throws Exception {
+    public void should_find_ById() throws Exception {
         final Long PARAM = 1L ;
-        final String RESULT = "Region Parisienne" ;
+        Region region = new Region(1L,"Auvergne-Rhône-Alpes");
 
-        Optional<Region> region = this.regionRepo.findById (PARAM);
-        assertThat(region.get().getName ()).isEqualTo(RESULT);
+        Optional<Region> find = this.regionRepo.findById (PARAM);
+        assertThat(find.get()).isEqualTo(region);
     }
 
     @Test
-    public void findAll() throws Exception {
-        final String RESULT = "Region Parisienne" ;
+    public void should_find_all_regions() throws Exception {
 
-        List<Region> regions = this.regionRepo.findAll();
-        assertThat(regions.get(0).getName ()).isEqualTo(RESULT);
-    }
+        // when
+        Iterable<Region> actual = this.regionRepo.findAll();
 
-    @Test
-    public void findRegionByName_1() throws Exception {
-        final String RESULT = "Region Parisienne" ;
-
-        Optional<Region> region = this.regionRepo.findRegionByName (RESULT);
-        assertThat(region.get().getName ()).isEqualTo(RESULT);
-    }
-
-    @Test
-    public void findRegionByName_2() throws Exception {
-        final String RESULT = "Test" ;
-
-        Optional<Region> region = this.regionRepo.findRegionByName (RESULT);
-        assertThat(region.isPresent ()).isFalse ();
+        // then
+        assertThat(actual)
+                .hasSize(13)
+                .doesNotContainNull();
     }
 
 }

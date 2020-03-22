@@ -1,38 +1,42 @@
 package com.jm.projet.filrouge.model;
 
-import com.jm.projet.filrouge.common.jpa.AbstractEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
-import lombok.*;
+import java.sql.SQLException;
 
 @Table(name="city")
 @AttributeOverride(name = "id", column = @Column(name = "ID_CITY"))
+
+@Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(callSuper = true, onlyExplicitlyIncluded = true)
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
-@Setter
-@Getter
-public class City extends AbstractEntity<Long> {
+public class City  {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(name = "NAME", length = 255, nullable = false)
-    @ToString.Include
     private String name;
 
     @Column(name = "postal_code",nullable = false)
-    @ToString.Include
     private String postalCode;
 
     @Column(name = "latitude", precision = 4, scale = 9)
-    @ToString.Include
     private Double latitude;
 
     @Column(name = "longitude" , precision = 4, scale = 9)
-    @ToString.Include
     private Double longitude;
 
-    @ToString.Include
     @ManyToOne
+    @JsonIgnore
     private Department department;
+
 }

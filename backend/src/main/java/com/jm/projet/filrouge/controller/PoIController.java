@@ -1,10 +1,9 @@
 package com.jm.projet.filrouge.controller;
 
-
 import com.jm.projet.filrouge.dto.PoIDTO;
+import com.jm.projet.filrouge.dto.RegionDTO;
 import com.jm.projet.filrouge.service.PoIService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,34 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Objects;
 
-@RestController
 @RequestMapping(value = "/api/pois")
+
+@RestController
 @Validated
-@Api(tags = "POI")
 @Slf4j
+@RequiredArgsConstructor
 public class PoIController {
 
     private final PoIService poiService;
 
-    @Autowired
-    PoIController(PoIService poiService) {
-        this.poiService = poiService;
-    }
-
     @GetMapping
     public ResponseEntity<List<PoIDTO>> getAll() {
         List<PoIDTO> pois = poiService.findAll ();
-        return (!pois.isEmpty ()) ? ResponseEntity.ok(pois) : new ResponseEntity(HttpStatus.NO_CONTENT) ;
+        return pois.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(pois);
     }
 
     @GetMapping("/{poiId}")
-    public ResponseEntity<PoIDTO> getPoIById(
-            @ApiParam(value = "The id of the PoI to retrieve", required = true)
+    public ResponseEntity<PoIDTO> getRegionById(
             @PathVariable(value = "poiId")
                     Long poiId) {
-        // log.info("[ENDPOINT] Received request to get a region");
-        PoIDTO poiDTO = poiService.findById(poiId);
-        return (!Objects.isNull (poiDTO)) ? ResponseEntity.ok(poiDTO) : ResponseEntity.notFound().build() ;
+        PoIDTO poi = poiService.findById(poiId);
+        return Objects.isNull(poi) ? ResponseEntity.notFound().build() : ResponseEntity.ok(poi);
     }
-
 }

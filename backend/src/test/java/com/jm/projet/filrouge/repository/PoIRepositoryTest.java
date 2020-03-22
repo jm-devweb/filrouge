@@ -2,6 +2,8 @@ package com.jm.projet.filrouge.repository;
 
 import com.jm.projet.filrouge.model.PoI;
 import com.jm.projet.filrouge.model.Region;
+import com.jm.projet.filrouge.model.Trip;
+import com.jm.projet.filrouge.model.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,13 +11,15 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import java.util.List;
+
+import java.util.ArrayList;
 import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @ExtendWith(SpringExtension.class)
-@AutoConfigureTestDatabase(replace= AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class PoIRepositoryTest {
 
     @Autowired
@@ -25,19 +29,30 @@ public class PoIRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    public void findById() throws Exception {
-        final Long PARAM = 1L ;
-        final String RESULT = "Cinéma" ;
+    public void should_find_ById() throws Exception {
+        final Long PARAM = 1L;
+        PoI poi = PoI.builder ( )
+                .id (1L)
+                .name ("Cinéma")
+                .trips (new ArrayList<Trip> ( ))
+                .users (new ArrayList<User> ( ))
+                .build ( );
 
-        Optional<PoI> poi = this.poiRepo.findById (PARAM);
-        assertThat(poi.get().getName ()).isEqualTo(RESULT);
+        Optional<PoI> find = this.poiRepo.findById (PARAM);
+
+        assertThat (find.get ( ).toString ( )).isEqualTo (poi.toString ( ));
     }
 
-    @Test
-    public void findAll() throws Exception {
-        final String RESULT = "Cinéma" ;
 
-        List<PoI> pois = this.poiRepo.findAll();
-        assertThat(pois.get(0).getName ()).isEqualTo(RESULT);
+    @Test
+    public void should_find_all_pois() throws Exception {
+
+        // when
+        Iterable<PoI> actual = this.poiRepo.findAll();
+
+        // then
+        assertThat(actual)
+                .hasSize(2)
+                .doesNotContainNull();
     }
 }

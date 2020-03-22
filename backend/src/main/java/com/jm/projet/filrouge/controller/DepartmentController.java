@@ -1,62 +1,52 @@
 package com.jm.projet.filrouge.controller;
 
 import com.jm.projet.filrouge.dto.DepartmentDTO;
-import com.jm.projet.filrouge.mapper.DepartmentMapper;
-import com.jm.projet.filrouge.model.Department;
+import com.jm.projet.filrouge.dto.RegionDTO;
 import com.jm.projet.filrouge.service.DepartmentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiParam;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+
+
+@RequestMapping(value = "/api/departments")
 
 @RestController
-@RequestMapping(value = "/api/departments")
 @Validated
-@Api(tags = "Department")
 @Slf4j
+@RequiredArgsConstructor
 public class DepartmentController {
 
     private final DepartmentService departmentService;
 
-    private final DepartmentMapper departmentMapper;
-
-    @Autowired
-    DepartmentController(DepartmentService departmentService, DepartmentMapper departmentMapper) {
-        this.departmentService = departmentService;
-        this.departmentMapper= departmentMapper;
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<DepartmentDTO>> find(
-            @ApiParam(value = "Id of Region for 'idRegion'")
-            @Valid
-            @RequestParam(value = "idRegion", required = false, defaultValue = "0") Long idRegion) {
-        List<Department> departments = null ;
-        if(idRegion == 0L) {
-            departments = departmentService.findAll ( );
-        }
-        else {
-            departments = departmentService.findDepartmentsByRegionId (idRegion);
-        }
-        return (!departments.isEmpty ()) ? ResponseEntity.ok(departmentMapper.toListDTO (departments)) : ResponseEntity.notFound().build() ;
+    @GetMapping
+    public ResponseEntity<List<DepartmentDTO>> getAll() {
+        List<DepartmentDTO> departments = departmentService.findAll ();
+        return departments.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(departments);
     }
 
     @GetMapping("/{departmentId}")
     public ResponseEntity<DepartmentDTO> getDepartmentById(
-            @ApiParam(value = "The id of the Department to retrieve", required = true)
             @PathVariable(value = "departmentId")
-                    Long departmentId) {
-        // log.info("[ENDPOINT] Received request to get a region");
-        Optional<Department> departmentOpt = departmentService.findById(departmentId);
-        return (departmentOpt.isPresent ()) ? ResponseEntity.ok(departmentMapper.toDTO (departmentOpt.get ())) : ResponseEntity.notFound().build() ;
+                    Long regionId) {
+        DepartmentDTO departmentDTO = departmentService.findById(regionId);
+        return Objects.isNull(departmentDTO) ? ResponseEntity.notFound().build() : ResponseEntity.ok(departmentDTO);
     }
 
-
+    @GetMapping("/regions/{regionId}")
+    public ResponseEntity<List<DepartmentDTO>> getDepartmentByRegionId(
+            @PathVariable(value = "regionId")
+                    Long regionId) {
+        List<DepartmentDTO> departmentDTO = departmentService.findDepartmentsByRegionId (regionId);
+        return Objects.isNull(departmentDTO) ? ResponseEntity.notFound().build() : ResponseEntity.ok(departmentDTO);
+    }
 }

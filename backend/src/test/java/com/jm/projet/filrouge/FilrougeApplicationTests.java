@@ -3,6 +3,8 @@ package com.jm.projet.filrouge;
 import com.jm.projet.filrouge.dto.CityDTO;
 import com.jm.projet.filrouge.dto.DepartmentDTO;
 import com.jm.projet.filrouge.dto.RegionDTO;
+import com.jm.projet.filrouge.mapper.DepartmentMapper;
+import com.jm.projet.filrouge.mapper.DepartmentMapperImpl;
 import com.jm.projet.filrouge.model.Department;
 import com.jm.projet.filrouge.model.Region;
 import org.junit.jupiter.api.Test;
@@ -38,7 +40,7 @@ class FilrougeApplicationTests {
     @Test
     public void region_FindAll() {
         final String URL = "/api/regions" ;
-        final String RESULT = "Region Parisienne";
+        final String RESULT = "Auvergne-Rhône-Alpes";
 
         ParameterizedTypeReference<List<RegionDTO>> typeRef = new ParameterizedTypeReference<List<RegionDTO>> () {};
         ResponseEntity<List<RegionDTO>> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
@@ -50,7 +52,7 @@ class FilrougeApplicationTests {
     @Test
     public void region_FindById() {
         final String URL = "/api/regions/1" ;
-        final String RESULT = "Region Parisienne";
+        final String RESULT = "Auvergne-Rhône-Alpes";
 
         ParameterizedTypeReference<RegionDTO> typeRef = new ParameterizedTypeReference<RegionDTO> () {};
         ResponseEntity<RegionDTO> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
@@ -58,12 +60,12 @@ class FilrougeApplicationTests {
         assertThat(object.getName ()).isEqualTo (RESULT);
     }
 
-/*
+
     // Test Department
     @Test
     public void department_FindAll() {
         final String URL = "/api/departments" ;
-        final String RESULT = "Paris";
+        final String RESULT = "Ain";
 
         ParameterizedTypeReference<List<RegionDTO>> typeRef = new ParameterizedTypeReference<List<RegionDTO>> () {};
         ResponseEntity<List<RegionDTO>> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
@@ -75,31 +77,35 @@ class FilrougeApplicationTests {
     @Test
     public void department_FindById() {
         final String URL = "/api/departments/1" ;
-        final String RESULT = "Paris";
+        final String RESULT = "Ain";
 
         ParameterizedTypeReference<DepartmentDTO> typeRef = new ParameterizedTypeReference<DepartmentDTO> () {};
         ResponseEntity<DepartmentDTO> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
         DepartmentDTO object = responseEntity.getBody();
         assertThat(object.getName ()).isEqualTo (RESULT);
+
     }
+
 
     @Test
     public void department_findDepartmentsByRegionId() {
-        final String URL = "/api/departments?idRegion=2" ;
-        final String RESULT = "Saone et loire";
+        final String URL = "/api/departments/regions/1" ;
+        final String RESULT = "Ain";
 
         ParameterizedTypeReference<List<DepartmentDTO>> typeRef = new ParameterizedTypeReference<List<DepartmentDTO>> () {};
         ResponseEntity<List<DepartmentDTO>> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
         List<DepartmentDTO> objectList = responseEntity.getBody();
         DepartmentDTO object = objectList.get(0);
+        System.out.println (object );
         assertThat(object.getName ()).isEqualTo (RESULT);
     }
+
 
     // Test City
     @Test
     public void city_FindAll() {
         final String URL = "/api/cities" ;
-        final String RESULT = "Paris";
+        final String RESULT = "OZAN";
 
         ParameterizedTypeReference<List<CityDTO>> typeRef = new ParameterizedTypeReference<List<CityDTO>> () {};
         ResponseEntity<List<CityDTO>> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
@@ -111,7 +117,7 @@ class FilrougeApplicationTests {
     @Test
     public void city_FindById() {
         final String URL = "/api/cities/1" ;
-        final String RESULT = "Paris";
+        final String RESULT = "OZAN";
 
         ParameterizedTypeReference<CityDTO> typeRef = new ParameterizedTypeReference<CityDTO> () {};
         ResponseEntity<CityDTO> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
@@ -122,8 +128,8 @@ class FilrougeApplicationTests {
 
     @Test
     public void city_findDepartmentsByRegionId() {
-        final String URL = "/api/cities?idDepartment=1" ;
-        final String RESULT = "Paris";
+        final String URL = "/api/cities/departments/1" ;
+        final String RESULT = "OZAN";
 
         ParameterizedTypeReference<List<CityDTO>> typeRef = new ParameterizedTypeReference<List<CityDTO>> () {};
         ResponseEntity<List<CityDTO>> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
@@ -131,7 +137,6 @@ class FilrougeApplicationTests {
         CityDTO object = objectList.get(0);
         assertThat(object.getName ()).isEqualTo (RESULT);
     }
-*/
 
 }
 
