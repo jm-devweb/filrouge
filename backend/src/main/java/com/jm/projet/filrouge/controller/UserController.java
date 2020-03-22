@@ -45,6 +45,12 @@ public class UserController {
     }
 
     @PostMapping
+    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
+        return ResponseEntity.ok (userService.save (userDTO));
+    }
+
+/*
+    @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO,
                                  HttpServletResponse httpResponse,
                                  WebRequest request) {
@@ -55,6 +61,7 @@ public class UserController {
                 request.getContextPath(), saveUser.getId ()));
         return ResponseEntity.ok(saveUser);
     }
+*/
 
 
 

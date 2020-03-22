@@ -10,6 +10,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import javax.persistence.Column;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -59,6 +62,21 @@ public class UserRepositoryTest {
                 .build ();
 
         User find = this.userRepo.findUserByLogin (PARAM);
+        assertThat(find.getFirstName ()).isEqualTo(user.getFirstName ());
+    }
+
+    @Test
+    public void should_save_user() throws Exception {
+        User user = User.builder ()
+                .firstName ("new")
+                .lastName ("person")
+                .login ("newlogin")
+                .password ("toto")
+                .email ("new@truc.fr")
+                .sex (User.Sex.M)
+                .build ();
+
+        User find = this.userRepo.save (user);
         assertThat(find.getFirstName ()).isEqualTo(user.getFirstName ());
     }
 }
