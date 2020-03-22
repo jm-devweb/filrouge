@@ -33,11 +33,11 @@ public class UserRepositoryTest {
         final Long PARAM = 1L ;
         User user = User.builder ()
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ();
 
         Optional<User> find = this.userRepo.findById (PARAM);
-        assertThat(find.get().getFirstName ()).isEqualTo(user.getFirstName ());
+        assertThat(find.get().getFirstname ()).isEqualTo(user.getFirstname ());
     }
 
     @Test
@@ -57,26 +57,26 @@ public class UserRepositoryTest {
         final String PARAM = "login" ;
         User user = User.builder ()
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .login ("login")
                 .build ();
 
         User find = this.userRepo.findUserByLogin (PARAM);
-        assertThat(find.getFirstName ()).isEqualTo(user.getFirstName ());
+        assertThat(find.getFirstname ()).isEqualTo(user.getFirstname ());
     }
 
     @Test
     public void should_save_user() throws Exception {
         User user = User.builder ()
-                .firstName ("new")
-                .lastName ("person")
+                .firstname ("new")
+                .lastname ("person")
                 .login ("newlogin")
                 .password ("toto")
                 .email ("new@truc.fr")
-                .sex (User.Sex.M)
+                .gender (User.Gender.M)
                 .build ();
 
         User find = this.userRepo.save (user);
-        assertThat(find.getFirstName ()).isEqualTo(user.getFirstName ());
+        assertThat(find.getFirstname ()).isEqualTo(user.getFirstname ());
     }
 }

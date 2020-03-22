@@ -43,7 +43,7 @@ public class UserServiceTest {
         // given
         User user = User.builder ()
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ();
 
         List<User> expectedUsers = Arrays.asList(user);
@@ -60,7 +60,7 @@ public class UserServiceTest {
     public void whenFindById_thenReturnUser() {
         Optional<User> expectedUser = Optional.of( User.builder()
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build());
 
         doReturn(expectedUser).when(userRepo).findById (1L);
@@ -77,7 +77,7 @@ public class UserServiceTest {
     public void whenUserByLogin_thenReturnUser() {
         User user = User.builder ()
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ();
 
         doReturn(user).when(userRepo).findUserByLogin ("login");
@@ -93,7 +93,7 @@ public class UserServiceTest {
     public void should_save_user() {
         User user = User.builder ()
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ();
 
         doReturn(user).when(userRepo).save (user);

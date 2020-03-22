@@ -52,7 +52,7 @@ public class UserControllerTest {
     void whenFindAll_thenReturnUserList() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ( );
 
         List<UserDTO> expectedUsers = Arrays.asList (userDTO);
@@ -71,7 +71,7 @@ public class UserControllerTest {
     void whenFindById_thenReturnUser() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ( );
 
         given (userService.findById (1L)).willReturn (userDTO);
@@ -88,7 +88,7 @@ public class UserControllerTest {
     void whenFindUserByLogin_thenReturnUser() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (1L)
-                .firstName ("santa")
+                .firstname ("santa")
                 .build ( );
 
         given (userService.findUserByLogin ("login")).willReturn (userDTO);
@@ -106,7 +106,7 @@ public class UserControllerTest {
     public void should_successfully_save_user() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (2L)
-                .firstName ("new person")
+                .firstname ("new person")
                 .build ( );
 
         given (userService.save (userDTO)).willReturn (userDTO);

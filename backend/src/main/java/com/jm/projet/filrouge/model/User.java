@@ -20,11 +20,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "FIRSTNAME", length = 255, nullable = false)
-    private String firstName;
+    @Column(name = "firstname", length = 255, nullable = false)
+    private String firstname;
 
     @Column(name = "lastname", length = 50, nullable = false)
-    private String lastName;
+    private String lastname;
 
     @Column(name = "login", length = 50, nullable = false)
     private String login;
@@ -38,11 +38,17 @@ public class User {
     @Column(name = "avatar", length = 255)
     private String avatar;
 
-    @Column(name = "descriptions", length = 2048)
-    private String descriptions;
+    @Column(name = "description", length = 2048)
+    private String description;
 
     @Column(name = "birthday", nullable = true)
     private Date birthday;
+
+    @Column(name = "date_creation", nullable = true)
+    private Date dateCreation;
+
+    @Column(name = "age")
+    private Integer age;
 
     @ManyToOne
     private City city;
@@ -50,11 +56,11 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<PoI> pois;
 
-    @Column(name = "sex", nullable = false)
+    @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Sex sex;
+    private Gender gender;
 
-    public enum Sex {
+    public enum Gender {
         M,
         F,
         N

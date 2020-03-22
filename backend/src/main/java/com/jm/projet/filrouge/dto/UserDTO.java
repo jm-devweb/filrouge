@@ -26,9 +26,9 @@ public class UserDTO {
 
     private Long id;
 
-    private String firstName;
+    private String firstname;
 
-    private String lastName;
+    private String lastname;
 
     private String login;
 
@@ -42,14 +42,18 @@ public class UserDTO {
 
     private Date birthday;
 
+    private Date dateCreation;
+
+    private Integer age;
+
     private City city;
 
     private List<PoI> pois;
 
     @Enumerated(EnumType.STRING)
-    private SexDTO sex;
+    private GenderDTO gender;
 
-    public enum SexDTO {
+    public enum GenderDTO {
         M,
         F,
         N
