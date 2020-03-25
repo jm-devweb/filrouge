@@ -11,18 +11,18 @@ public class TripSpecifications {
      * @param poi the poi to check
      * @return a trip specification
      */
- /*   public static Specification<Trip> hasPoIOptional(int poiId) {
+    public static Specification<Trip> hasPoIOptional(int poiId) {
         if(poiId == 0){
             return (trip, cq, cb) -> {
-                return cb.equal(trip.get("city").get("department").get("id"), user.get("city").get("department").get("id"));
+                return cb.equal(trip.get("poi").get("id"), trip.get("poi").get("id"));
             };
         } else {
-            return (user, cq, cb) -> {
-                return cb.equal(user.get("city").get("department").get("id"), departmentId);
+            return (trip, cq, cb) -> {
+                return cb.equal(trip.get("poi").get("id"), poiId);
             };
         }
     }
-*/
+
     /**
      * Check a optional department
      *

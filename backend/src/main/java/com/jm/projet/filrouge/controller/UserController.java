@@ -52,10 +52,6 @@ public class UserController {
         return Objects.isNull (userDTO) ? ResponseEntity.notFound ( ).build ( ) : ResponseEntity.ok (userDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok (userService.save (userDTO));
-    }
 
     /**
      * Filter users
@@ -106,7 +102,6 @@ public class UserController {
         return userService.getUsersByBirthday(pageable);
     }
 
-/*
     @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO,
                                  HttpServletResponse httpResponse,
@@ -116,9 +111,8 @@ public class UserController {
         httpResponse.setStatus(HttpStatus.CREATED.value());
         httpResponse.setHeader("Location", String.format("%s/api/users/%s",
                 request.getContextPath(), saveUser.getId ()));
-        return ResponseEntity.ok(saveUser);
+        return ResponseEntity.status (HttpStatus.CREATED.value()).body (saveUser);
     }
-*/
 
 
 
