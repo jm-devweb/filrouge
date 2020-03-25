@@ -36,7 +36,7 @@ public class UserSpecifications {
             };
         } else {
             return (user, cq, cb) -> {
-                return cb.equal(user.get("login"), pseudo);
+                return cb.like(user.get("login"), pseudo.toLowerCase());
             };
         }
     }

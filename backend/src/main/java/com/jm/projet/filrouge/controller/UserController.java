@@ -4,10 +4,8 @@ import com.jm.projet.filrouge.dto.UserDTO;
 import com.jm.projet.filrouge.model.User;
 import com.jm.projet.filrouge.service.UserService;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.converters.PageableAsQueryParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -20,6 +18,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -63,26 +62,25 @@ public class UserController {
      *
      * @param pageable the page to get
      * @param gender the gender to get (optional)
-     * @param ageCategory the age category to get (optional)
+     * @param category the age category to get (optional)
      * @param login the login to get (optional)
      * @param region the region id to get (optional)
      * @param department the department id to get (optional)
      * @return a page of users
      */
     @GetMapping("/filter")
-    @PageableAsQueryParam
     public Page<UserDTO> getFilteredUsers(
-            @PageableDefault(size=25, page = 0, direction = Sort.Direction.ASC) @Parameter(hidden=true) Pageable pageable,
-            @ApiParam(value = "Query param for 'gender'") @Valid @RequestParam(value = "gender", defaultValue = "") String gender,
-            @ApiParam(value = "Query param for 'ageCategory'") @Valid @RequestParam(value = "ageCategory", defaultValue = "") String ageCategory,
-            @ApiParam(value = "Query param for 'login'") @Valid @RequestParam(value = "login", defaultValue = "") String login,
-            @ApiParam(value = "Query param for 'region'") @Valid @RequestParam(value = "region", defaultValue = "0") Integer region,
-            @ApiParam(value = "Query param for 'department'") @Valid @RequestParam(value = "department", defaultValue = "0") Integer department
+            @PageableDefault(size=25, page = 0, direction = Sort.Direction.ASC) Pageable pageable,
+            @ApiParam(value = "Query param for 'gender'", example = "") @Valid @RequestParam(value = "gender", defaultValue = "") String gender,
+            @ApiParam(value = "Query param for 'category'", example = "") @Valid @RequestParam(value = "category", defaultValue = "") String category,
+            @ApiParam(value = "Query param for 'login'", example = "") @Valid @RequestParam(value = "login", defaultValue = "") String login,
+            @ApiParam(value = "Query param for 'region'", example = "0") @Valid @RequestParam(value = "region", defaultValue = "0") Integer region,
+            @ApiParam(value = "Query param for 'department'", example = "0") @Valid @RequestParam(value = "department", defaultValue = "0") Integer department
     ) {
         // Transtypage gender String -> Enum User.Gender
         User.Gender g;
         switch (gender){
-            case "M":
+            case "H":
                 g = User.Gender.M;
                 break;
             case "F":
@@ -94,8 +92,18 @@ public class UserController {
             default:
                 g = null;
         }
+        return userService.getFilteredUsers(pageable, g, category, login, region, department);
+    }
 
-        return userService.getFilteredUsers(pageable, g, ageCategory, login, region, department);
+    /**
+     * Get users filtered on a birthday date
+     *
+     * @return
+     */
+    @GetMapping("/birthdays")
+    public Page<UserDTO> getUsersByBirthday(
+            @PageableDefault(size=25, page = 0, direction = Sort.Direction.ASC) Pageable pageable) {
+        return userService.getUsersByBirthday(pageable);
     }
 
 /*
