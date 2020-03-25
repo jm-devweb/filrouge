@@ -1,6 +1,7 @@
 package com.jm.projet.filrouge.controller;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jm.projet.filrouge.dto.UserDTO;
 import com.jm.projet.filrouge.model.User;
 import com.jm.projet.filrouge.service.UserService;
@@ -14,6 +15,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
@@ -24,6 +27,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.web.servlet.function.RequestPredicates.accept;
 
@@ -31,6 +35,8 @@ import static org.springframework.web.servlet.function.RequestPredicates.accept;
 @AutoConfigureMockMvc
 @WebMvcTest(UserController.class)
 public class UserControllerTest {
+
+    static String USER_1_NAME = "Tera"  ;
 
     @Autowired
     MockMvc mockMvc;
@@ -52,7 +58,7 @@ public class UserControllerTest {
     void whenFindAll_thenReturnUserList() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (1L)
-                .firstname ("santa")
+                .firstname (USER_1_NAME)
                 .build ( );
 
         List<UserDTO> expectedUsers = Arrays.asList (userDTO);
@@ -64,14 +70,14 @@ public class UserControllerTest {
                 .andExpect (status ( ).isOk ( ))
                 .andExpect (content ( )
                         .contentTypeCompatibleWith (MediaType.APPLICATION_JSON))
-                .andExpect (jsonPath ("$[0].firstName", is ("santa")));
+                .andExpect (jsonPath ("$[0].firstname", is (USER_1_NAME)));
     }
 
     @Test
     void whenFindById_thenReturnUser() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (1L)
-                .firstname ("santa")
+                .firstname (USER_1_NAME)
                 .build ( );
 
         given (userService.findById (1L)).willReturn (userDTO);
@@ -81,14 +87,14 @@ public class UserControllerTest {
                 .andExpect (status ( ).isOk ( ))
                 .andExpect (content ( )
                         .contentTypeCompatibleWith (MediaType.APPLICATION_JSON))
-                .andExpect (jsonPath ("firstName", is ("santa")));
+                .andExpect (jsonPath ("firstname", is (USER_1_NAME)));
     }
 
     @Test
     void whenFindUserByLogin_thenReturnUser() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
                 .id (1L)
-                .firstname ("santa")
+                .firstname (USER_1_NAME)
                 .build ( );
 
         given (userService.findUserByLogin ("login")).willReturn (userDTO);
@@ -98,25 +104,33 @@ public class UserControllerTest {
                 .andExpect (status ( ).isOk ( ))
                 .andExpect (content ( )
                         .contentTypeCompatibleWith (MediaType.APPLICATION_JSON))
-                .andExpect (jsonPath ("firstName", is ("santa")));
+                .andExpect (jsonPath ("firstname", is (USER_1_NAME)));
 
     }
 
     @Test
     public void should_successfully_save_user() throws Exception {
         UserDTO userDTO = UserDTO.builder ( )
-                .id (2L)
                 .firstname ("new person")
                 .build ( );
 
         given (userService.save (userDTO)).willReturn (userDTO);
 
-        mockMvc.perform(post("/api/users")
+         mockMvc.perform( MockMvcRequestBuilders
+                .post("/api/users")
+                .content(asJsonString(userDTO))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\": 2, \"firstName\": \"new person\"}")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(header().string("Location", "/api/users/2"))
-                .andExpect(jsonPath("$.id").value("2"))
-                .andExpect(jsonPath("$.firstName").value("new person"));
+  //               .andDo(print())
+                 .andExpect(status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.firstname").exists());
+    }
+
+    public static String asJsonString(final Object obj) {
+        try {
+            return new ObjectMapper ( ).writeValueAsString (obj);
+        } catch (Exception e) {
+            throw new RuntimeException (e);
+        }
     }
 }

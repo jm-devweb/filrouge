@@ -18,6 +18,8 @@ spring:
       maximum-pool-size: 15
       connection-timeout: 10000
       initialization-fail-timeout: 60000
+    initialization-mode: always
+#   data: classpath:/1-data-postgres.sql
     driver-class-name: org.postgresql.Driver
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${DATABASE_USER:db-user}

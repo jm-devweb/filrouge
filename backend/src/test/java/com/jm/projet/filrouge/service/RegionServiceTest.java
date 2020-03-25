@@ -10,11 +10,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
@@ -41,7 +43,7 @@ public class RegionServiceTest {
                     .name("Auvergne-Rhône-Alpes")
                     .build();
             List<Region> expectedRegions = Arrays.asList(region);
-            doReturn(expectedRegions).when(regionRepo).findAll();
+            doReturn(expectedRegions).when(regionRepo).findAll(Sort.by(Sort.Direction.ASC, "name"));
 
             // when
             List<RegionDTO> actualRegions = regionService.findAll();
@@ -49,6 +51,19 @@ public class RegionServiceTest {
             // then
            assertThat(actualRegions).isEqualTo(regionMapper.INSTANCE.toListDTO (expectedRegions) );
         }
+
+    @Test
+    public void whenFindAll_thenReturnEmptyList() {
+        // given
+        List<Region> expectedRegions = Arrays.asList();
+        doReturn(expectedRegions).when(regionRepo).findAll(Sort.by(Sort.Direction.ASC, "name"));
+
+        // when
+        List<RegionDTO> actualRegions = regionService.findAll();
+
+        // then
+        assertThat(actualRegions).isEmpty ();
+    }
 
     @Test
     public void whenFindById_thenReturnRegion() {
@@ -61,45 +76,21 @@ public class RegionServiceTest {
         doReturn(expectedRegion).when(regionRepo).findById (1L);
 
         // when
-        RegionDTO actualRegion = regionService.findById (1L);
+        Optional<RegionDTO> actualRegion = regionService.findById (1L);
 
         // then
-        assertThat(actualRegion).isEqualTo(regionMapper.INSTANCE.toDTO (expectedRegion.get ()));
+        assertThat(actualRegion.get ()).isEqualTo(regionMapper.INSTANCE.toDTO (expectedRegion.get ()));
     }
 
-
-/*
     @Test
-    public void whenSave_thenReturnRegion() {
+    public void whenFindById_thenReturnEmpty() {
         // given
+        doReturn(Optional.empty ()).when(regionRepo).findById (1L);
 
-        RegionDTO expectedRegionDTO = new RegionDTO();
-        expectedRegionDTO.setId (1L);
-        expectedRegionDTO.setName ("Bourgogne");
-        System.out.println (expectedRegionDTO );
-        System.out.println (regionMapper.toEntity ( expectedRegionDTO) );
-
-        assertThat(expectedRegionDTO.getName ()).isEqualTo(regionMapper.toEntity ( expectedRegionDTO).getName ());
-
-        Region expectedRegion = new Region();
-        expectedRegion.setId (2L);
-        expectedRegion.setName ("AAAA");
-        System.out.println (expectedRegion );
-        System.out.println (regionMapper.toDTO ( expectedRegion) );
-
-
-
-   *//*     System.out.println (expectedRegionDTO );
-      //  Region expectedRegion = regionMapper.toEntity (expectedRegionDTO);
-        doReturn(expectedRegion).when(regionRepo).save (expectedRegion);
-
-        System.out.println (expectedRegion );
         // when
-        RegionDTO actualRegionDTO = regionService.save (expectedRegionDTO);
+        Optional<RegionDTO> actualRegion = regionService.findById (1L);
 
         // then
-        System.out.println (actualRegionDTO.toString () );
-        System.out.println (expectedRegionDTO.toString () );
-        assertThat(actualRegionDTO.toString ()).isEqualTo(expectedRegionDTO.toString ());*//*
-    }*/
+        assertThat(actualRegion).isEmpty ();
+    }
 }

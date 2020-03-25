@@ -51,7 +51,7 @@ public class DepartmentRepositoryTest {
         final Long PARAM = 1L ;
 
         // when
-        Iterable<Department> actual = this.departmentRepository.findDepartmentsByRegionId (PARAM);
+        Iterable<Department> actual = this.departmentRepository.findDepartmentsByRegionIdOrderByName (PARAM);
 
         // then
         assertThat(actual)

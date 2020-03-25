@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
@@ -48,11 +49,11 @@ public class PoIRepositoryTest {
     public void should_find_all_pois() throws Exception {
 
         // when
-        Iterable<PoI> actual = this.poiRepo.findAll();
+        Iterable<PoI> actual = this.poiRepo.findAll(Sort.by(Sort.Direction.ASC, "name"));
 
         // then
         assertThat(actual)
-                .hasSize(2)
+                .hasSize(14)
                 .doesNotContainNull();
     }
 }

@@ -3,11 +3,13 @@ package com.jm.projet.filrouge.controller;
 import com.jm.projet.filrouge.dto.UserDTO;
 import com.jm.projet.filrouge.model.User;
 import com.jm.projet.filrouge.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.converters.PageableAsQueryParam;
+import org.hibernate.annotations.Parameter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -16,12 +18,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.WebRequest;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping(value = "/api/users")
 @RestController
@@ -34,16 +36,33 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
+
     public ResponseEntity<List<UserDTO>> getAll() {
         List<UserDTO> users = userService.findAll ( );
         return users.isEmpty ( ) ? ResponseEntity.noContent ( ).build ( ) : ResponseEntity.ok (users);
     }
 
-    @GetMapping("/{userId}")
+    @GetMapping(value = "/{userId}", produces = APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Get details of a specific user",
+            response = UserDTO.class,
+            notes = "Get details of a specific user",
+            nickname = "getUserById")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "Successful operation"),
+                    @ApiResponse(code = 400, message = "Invalid type value"),
+                    @ApiResponse(code = 401, message = "Unauthorized"),
+                    @ApiResponse(code = 403, message = "Forbidden"),
+                    @ApiResponse(code = 404, message = "Vehicle not found"),
+                    @ApiResponse(code = 500, message = "UnexpectedError")
+            })
     public ResponseEntity<UserDTO> getUserById(
             @PathVariable(value = "userId")
                     Long userId) {
         UserDTO userDTO = userService.findById (userId);
+
+       // ResponseEntity.ok().h.body(userDTO);
         return Objects.isNull (userDTO) ? ResponseEntity.notFound ( ).build ( ) : ResponseEntity.ok (userDTO);
     }
 
@@ -54,8 +73,25 @@ public class UserController {
     }
 
     @PostMapping
+    @ApiOperation(
+            value = "New user",
+            response = UserDTO.class,
+            notes = "Create user",
+            nickname = "create")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "Successful operation"),
+                    @ApiResponse(code = 400, message = "Invalid type value"),
+                    @ApiResponse(code = 401, message = "Unauthorized"),
+                    @ApiResponse(code = 403, message = "Forbidden"),
+                    @ApiResponse(code = 404, message = "Vehicle not found"),
+                    @ApiResponse(code = 500, message = "UnexpectedError")
+            })
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO) {
-        return ResponseEntity.ok (userService.save (userDTO));
+        UserDTO newUser = userService.save (userDTO) ;
+        return Objects.isNull (userDTO) ? ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build ()
+                 : ResponseEntity.status (HttpStatus.CREATED).body (newUser);
+
     }
 
     /**
@@ -70,11 +106,10 @@ public class UserController {
      * @return a page of users
      */
     @GetMapping("/filter")
-    @PageableAsQueryParam
     public Page<UserDTO> getFilteredUsers(
-            @PageableDefault(size=25, page = 0, direction = Sort.Direction.ASC) @Parameter(hidden=true) Pageable pageable,
+            @PageableDefault(size=25, page = 0, direction = Sort.Direction.ASC) Pageable pageable,
             @ApiParam(value = "Query param for 'gender'") @Valid @RequestParam(value = "gender", defaultValue = "") String gender,
-            @ApiParam(value = "Query param for 'ageCategory'") @Valid @RequestParam(value = "ageCategory", defaultValue = "") String ageCategory,
+            @ApiParam(value = "Query param for 'category'") @Valid @RequestParam(value = "category", defaultValue = "") String category,
             @ApiParam(value = "Query param for 'login'") @Valid @RequestParam(value = "login", defaultValue = "") String login,
             @ApiParam(value = "Query param for 'region'") @Valid @RequestParam(value = "region", defaultValue = "0") Integer region,
             @ApiParam(value = "Query param for 'department'") @Valid @RequestParam(value = "department", defaultValue = "0") Integer department
@@ -95,11 +130,10 @@ public class UserController {
                 g = null;
         }
 
-        return userService.getFilteredUsers(pageable, g, ageCategory, login, region, department);
+        return userService.getFilteredUsers(pageable, g, category, login, region, department);
     }
 
-/*
-    @PostMapping
+  /*  @PostMapping
     public ResponseEntity<UserDTO> create(@Valid @RequestBody UserDTO userDTO,
                                  HttpServletResponse httpResponse,
                                  WebRequest request) {
@@ -111,7 +145,6 @@ public class UserController {
         return ResponseEntity.ok(saveUser);
     }
 */
-
 
 
     @PutMapping("/{id}")

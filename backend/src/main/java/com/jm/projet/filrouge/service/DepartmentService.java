@@ -1,20 +1,15 @@
 package com.jm.projet.filrouge.service;
 
 import com.jm.projet.filrouge.dto.DepartmentDTO;
-import com.jm.projet.filrouge.dto.RegionDTO;
 import com.jm.projet.filrouge.mapper.DepartmentMapper;
-import com.jm.projet.filrouge.mapper.RegionMapper;
 import com.jm.projet.filrouge.model.Department;
-import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.repository.DepartmentRepository;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -35,7 +30,7 @@ public class DepartmentService {
     }
 
      public List<DepartmentDTO> findDepartmentsByRegionId(Long id) {
-         List<Department> found = departmentRepository.findDepartmentsByRegionId (id);
+         List<Department> found = departmentRepository.findDepartmentsByRegionIdOrderByName (id);
          return departmentMapper.INSTANCE.toListDTO (found) ;
     }
 

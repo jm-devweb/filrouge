@@ -16,6 +16,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
@@ -24,6 +26,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -49,51 +52,97 @@ public class DepartmentControllerTest {
 
     @Test
     void whenFindAll_thenReturnDepartmentList() throws Exception {
-        DepartmentDTO department = DepartmentDTO.builder()
+        DepartmentDTO objDTO1 = DepartmentDTO.builder()
+                .id (1L)
                 .name("Paris")
                 .build();
-        List<DepartmentDTO> expectedDepartments = Arrays.asList(department);
+        DepartmentDTO objDTO2 = DepartmentDTO.builder()
+                .id (2L)
+                .name("Essonne")
+                .build();
+        List<DepartmentDTO> expectedList = Arrays.asList(objDTO1,objDTO2);
 
-        given(departmentService.findAll ()).willReturn(expectedDepartments);
+        given(departmentService.findAll ()).willReturn(expectedList);
 
-        mockMvc.perform(get("/api/departments")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/departments")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("Paris")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[*].id").isNotEmpty());
     }
 
     @Test
-    void whenFindById_thenReturnRegion() throws Exception {
-        DepartmentDTO departmentDTO = new DepartmentDTO (1L,"Ain",new Region (1L,"Auvergne-Rhône-Alpes"));
+    void whenFindAll_thenReturnEmptyList() throws Exception {
+        List<DepartmentDTO> expectedList = Arrays.asList();
 
-        given(departmentService.findById (1L)).willReturn(departmentDTO);
+        given(departmentService.findAll ()).willReturn(expectedList);
 
-        mockMvc.perform(get("/api/departments/1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("name", is("Ain")));
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/departments")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent ());
     }
 
     @Test
-    void whenFindByRegionId_thenReturnRegion() throws Exception {
-        DepartmentDTO department = DepartmentDTO.builder()
+    void whenFindById_thenReturnDepartment() throws Exception {
+        DepartmentDTO objDTO1 = DepartmentDTO.builder()
+                .id (1L)
                 .name("Paris")
                 .build();
-        List<DepartmentDTO> expectedDepartments = Arrays.asList(department);
 
-        given(departmentService.findDepartmentsByRegionId (1L)).willReturn(expectedDepartments);
+        given(departmentService.findById (1L)).willReturn(objDTO1);
 
-        mockMvc.perform(get("/api/departments/regions/1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/departments/1")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("Paris")));
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty());
     }
 
+    @Test
+    void whenFindById_thenReturnNull() throws Exception {
+
+        given(departmentService.findById (1L)).willReturn(null);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/departments/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound ());
+    }
+
+
+    @Test
+    void whenFindByRegionId_thenReturnDepartmentList() throws Exception {
+        DepartmentDTO objDTO1 = DepartmentDTO.builder()
+                .id (1L)
+                .name("Paris")
+                .build();
+        DepartmentDTO objDTO2 = DepartmentDTO.builder()
+                .id (2L)
+                .name("Essonne")
+                .build();
+        List<DepartmentDTO> expectedList = Arrays.asList(objDTO1,objDTO2);
+
+        given(departmentService.findDepartmentsByRegionId (1L)).willReturn(expectedList);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/departments/regions/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[*].id").isNotEmpty());
+    }
+
+    @Test
+    void whenFindByRegionId_thenReturnEmptyList() throws Exception {
+
+        given(departmentService.findDepartmentsByRegionId (1L)).willReturn(null);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/departments/regions/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound ());
+    }
 }

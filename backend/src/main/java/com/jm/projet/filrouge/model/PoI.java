@@ -27,7 +27,6 @@ public class PoI  {
     private List<User> users;
 
     @JsonIgnore
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Trip> trips;
-
 }

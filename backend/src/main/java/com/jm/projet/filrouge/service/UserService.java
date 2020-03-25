@@ -1,9 +1,7 @@
 package com.jm.projet.filrouge.service;
 
-import com.jm.projet.filrouge.dto.DepartmentDTO;
 import com.jm.projet.filrouge.dto.UserDTO;
 import com.jm.projet.filrouge.mapper.UserMapper;
-import com.jm.projet.filrouge.model.Department;
 import com.jm.projet.filrouge.model.User;
 import com.jm.projet.filrouge.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.jm.projet.filrouge.repository.UserSpecifications.*;
 import static org.springframework.data.jpa.domain.Specification.where;

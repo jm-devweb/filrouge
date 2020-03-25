@@ -1,5 +1,6 @@
 package com.jm.projet.filrouge.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jm.projet.filrouge.model.Trip;
 import com.jm.projet.filrouge.model.User;
 import io.swagger.annotations.ApiModel;
@@ -37,4 +38,6 @@ public class PoIDTO {
     private List<User> users;
 
     private List<Trip> trips;
+
+
 }

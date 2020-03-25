@@ -13,6 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
@@ -21,6 +23,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(SpringExtension.class)
@@ -45,54 +48,63 @@ public class CityControllerTest {
     }
 
     @Test
-    void whenFindAll_thenReturnCityList() throws Exception {
-        CityDTO city = CityDTO.builder()
-                .name("Paris")
-                .build();
-        List<CityDTO> expectedCities = Arrays.asList(city);
-
-        given(cityService.findAll ()).willReturn(expectedCities);
-
-        mockMvc.perform(get("/api/cities")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("Paris")));
-    }
-
-    @Test
     void whenFindById_thenReturnCity() throws Exception {
-        CityDTO city = CityDTO.builder()
+        CityDTO objDTO1 = CityDTO.builder()
+                .id (1L)
                 .name("Paris")
                 .build();
 
-        given(cityService.findById (1L)).willReturn(city);
+        given(cityService.findById (1L)).willReturn(objDTO1);
 
-        mockMvc.perform(get("/api/cities/1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/cities/1")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("name", is("Paris")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty());
     }
 
     @Test
-    void whenFindByDepartmentId_thenReturnRegion() throws Exception {
-        CityDTO cityDTO = CityDTO.builder()
-                .name("Paris")
-                .build();
-        List<CityDTO> expectedCities = Arrays.asList(cityDTO);
+    void whenFindById_thenReturnNull() throws Exception {
 
-        given(cityService.findCitiesByDepartmentId (1L)).willReturn(expectedCities);
+        given(cityService.findById (1L)).willReturn(null);
 
-        mockMvc.perform(get("/api/cities/departments/1")
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("Paris")));
-
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/cities/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound ());
     }
 
+    @Test
+    void whenFindByRegionId_thenReturnCityList() throws Exception {
+        CityDTO objDTO1 = CityDTO.builder()
+                .id (1L)
+                .name("Paris")
+                .build();
+        CityDTO objDTO2 = CityDTO.builder()
+                .id (2L)
+                .name("Dourdan")
+                .build();
+        List<CityDTO> expectedList = Arrays.asList(objDTO1,objDTO2);
+
+        given(cityService.findCitiesByDepartmentId (1L)).willReturn(expectedList);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/cities/departments/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[*].id").isNotEmpty());
+    }
+
+    @Test
+    void whenFindByRegionId_thenReturnEmptyList() throws Exception {
+
+        given(cityService.findCitiesByDepartmentId (1L)).willReturn(null);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/cities/departments/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound ());
+    }
 }

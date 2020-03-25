@@ -1,17 +1,15 @@
 package com.jm.projet.filrouge.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jm.projet.filrouge.model.City;
 import com.jm.projet.filrouge.model.PoI;
-import com.jm.projet.filrouge.model.User;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.sql.Date;
 import java.util.List;
 

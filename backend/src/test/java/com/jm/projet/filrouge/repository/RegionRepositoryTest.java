@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Optional;
@@ -25,12 +26,20 @@ public class RegionRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    public void should_find_ById() throws Exception {
+    public void should_find_ById_ReturnRegion() throws Exception {
         final Long PARAM = 1L ;
         Region region = new Region(1L,"Auvergne-Rhône-Alpes");
 
         Optional<Region> find = this.regionRepo.findById (PARAM);
         assertThat(find.get()).isEqualTo(region);
+    }
+
+    @Test
+    public void should_find_ById_ReturnEmpty() throws Exception {
+        final Long PARAM = 0L ;
+
+        Optional<Region> find = this.regionRepo.findById (PARAM);
+        assertThat(find).isEmpty ();
     }
 
     @Test

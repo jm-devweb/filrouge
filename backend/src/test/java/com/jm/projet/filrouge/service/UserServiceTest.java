@@ -103,6 +103,6 @@ public class UserServiceTest {
         // then
         assertThat(userMapper.INSTANCE.toEntity (actualUsers))
                 .isNotNull()
-                .isEqualToComparingOnlyGivenFields(user, "id", "firstName");
+                .isEqualToComparingOnlyGivenFields(user, "id", "firstname");
     }
 }

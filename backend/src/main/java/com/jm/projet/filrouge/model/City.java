@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.SQLException;
 
 @Table(name="city")
 @AttributeOverride(name = "id", column = @Column(name = "ID_CITY"))
@@ -36,7 +35,6 @@ public class City  {
     private Double longitude;
 
     @ManyToOne
-    @JsonIgnore
     private Department department;
 
 }

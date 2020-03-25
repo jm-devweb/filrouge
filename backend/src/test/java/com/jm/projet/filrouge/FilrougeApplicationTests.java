@@ -10,6 +10,7 @@ import com.jm.projet.filrouge.model.Region;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -102,7 +103,7 @@ class FilrougeApplicationTests {
 
 
     // Test City
-    @Test
+ /*   @Test
     public void city_FindAll() {
         final String URL = "/api/cities" ;
         final String RESULT = "OZAN";
@@ -112,7 +113,7 @@ class FilrougeApplicationTests {
         List<CityDTO> objectList = responseEntity.getBody();
         CityDTO object = objectList.get(0);
         assertThat(object.getName ()).isEqualTo (RESULT);
-    }
+    }*/
 
     @Test
     public void city_FindById() {
@@ -126,7 +127,7 @@ class FilrougeApplicationTests {
 
     }
 
-    @Test
+ /*   @Test
     public void city_findDepartmentsByRegionId() {
         final String URL = "/api/cities/departments/1" ;
         final String RESULT = "OZAN";
@@ -136,7 +137,7 @@ class FilrougeApplicationTests {
         List<CityDTO> objectList = responseEntity.getBody();
         CityDTO object = objectList.get(0);
         assertThat(object.getName ()).isEqualTo (RESULT);
-    }
+    }*/
 
 }
 

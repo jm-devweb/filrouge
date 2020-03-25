@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,12 +45,10 @@ public class PoIServiceTest {
         PoI poi = PoI.builder()
                 .id (1L)
                 .name ("Cinéma")
-                .trips (new ArrayList<Trip> ( ))
-                .users (new ArrayList<User> ( ))
                 .build();
 
         List<PoI> expectedPoIs = Arrays.asList(poi);
-        doReturn(expectedPoIs).when(poiRepo).findAll();
+        doReturn(expectedPoIs).when(poiRepo).findAll(Sort.by(Sort.Direction.ASC, "name"));
 
         // when
         List<PoIDTO> actualPoIs = poiService.findAll();
@@ -66,8 +65,6 @@ public class PoIServiceTest {
         Optional<PoI> expectedPoI = Optional.of(PoI.builder()
                 .id (1L)
                 .name ("Cinéma")
-                .trips (new ArrayList<Trip> ( ))
-                .users (new ArrayList<User> ( ))
                 .build());
 
         doReturn(expectedPoI).when(poiRepo).findById (1L);

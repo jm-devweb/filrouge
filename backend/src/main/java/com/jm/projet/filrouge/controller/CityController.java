@@ -3,16 +3,16 @@ package com.jm.projet.filrouge.controller;
 import com.jm.projet.filrouge.dto.CityDTO;
 import com.jm.projet.filrouge.dto.DepartmentDTO;
 import com.jm.projet.filrouge.service.CityService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +23,7 @@ import java.util.Objects;
 @Validated
 @Slf4j
 @RequiredArgsConstructor
+@CrossOrigin
 public class CityController {
 
     private final CityService cityService;
@@ -34,12 +35,24 @@ public class CityController {
     }
 
     @GetMapping("/{cityId}")
+    @ApiOperation(
+            value = "Get a city",
+            response = CityDTO.class,
+            notes = "Get a city",
+            nickname = "getCityById")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(code = 200, message = "Successful operation"),
+                    @ApiResponse(code = 404, message = "Not found")
+            })
     public ResponseEntity<CityDTO> getCityById(
             @PathVariable(value = "cityId")
                     Long cityId) {
         CityDTO city = cityService.findById(cityId);
         return Objects.isNull(city) ? ResponseEntity.notFound().build() : ResponseEntity.ok(city);
     }
+
+
 
     @GetMapping("/departments/{departmentId}")
     public ResponseEntity<List<CityDTO>> getCityByDepartmentId(

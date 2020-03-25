@@ -1,5 +1,6 @@
 package com.jm.projet.filrouge.controller;
 
+import com.jm.projet.filrouge.dto.DepartmentDTO;
 import com.jm.projet.filrouge.dto.PoIDTO;
 import com.jm.projet.filrouge.dto.RegionDTO;
 import com.jm.projet.filrouge.model.Trip;
@@ -16,6 +17,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
@@ -49,44 +52,63 @@ public class PoIControllerTest {
 
     @Test
     void whenFindAll_thenReturnPoIList() throws Exception {
-        PoIDTO poi = PoIDTO.builder()
+        PoIDTO objDTO1 = PoIDTO.builder()
                 .id (1L)
-                .name ("Cinéma")
-                .trips (new ArrayList<Trip> ( ))
-                .users (new ArrayList<User> ( ))
+                .name("Cinéma")
                 .build();
-        List<PoIDTO> expectedPoIs = Arrays.asList(poi);
+        PoIDTO objDTO2 = PoIDTO.builder()
+                .id (2L)
+                .name("Théatre")
+                .build();
+        List<PoIDTO> expectedList = Arrays.asList(objDTO1,objDTO2);
 
-        given(poiService.findAll ()).willReturn(expectedPoIs);
+        given(poiService.findAll ()).willReturn(expectedList);
 
-        mockMvc.perform(get("/api/pois")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/pois")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0].name", is("Cinéma")));
-
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.[*].id").isNotEmpty());
     }
 
+    @Test
+    void whenFindAll_thenReturnEmptyList() throws Exception {
+        List<PoIDTO> expectedList = Arrays.asList();
+
+        given(poiService.findAll ()).willReturn(expectedList);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/pois")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent ());
+    }
 
     @Test
     void whenFindById_thenReturnPoI() throws Exception {
-        PoIDTO poi = PoIDTO.builder()
+        PoIDTO objDTO1 = PoIDTO.builder()
                 .id (1L)
-                .name ("Cinéma")
-                .trips (new ArrayList<Trip> ( ))
-                .users (new ArrayList<User> ( ))
+                .name("Cinéma")
                 .build();
 
-        given(poiService.findById (1L)).willReturn(poi);
+        given(poiService.findById (1L)).willReturn(objDTO1);
 
-        mockMvc.perform(get("/api/pois/1")
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/pois/1")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content()
-                        .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("name", is("Cinéma")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").isNotEmpty());
     }
 
+    @Test
+    void whenFindById_thenReturnNull() throws Exception {
 
+        given(poiService.findById (1L)).willReturn(null);
+
+        mockMvc.perform( MockMvcRequestBuilders
+                .get("/api/pois/1")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound ());
+    }
 }

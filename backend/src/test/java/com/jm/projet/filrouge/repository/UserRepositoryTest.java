@@ -33,7 +33,7 @@ public class UserRepositoryTest {
         final Long PARAM = 1L ;
         User user = User.builder ()
                 .id (1L)
-                .firstname ("santa")
+                .firstname ("Tera")
                 .build ();
 
         Optional<User> find = this.userRepo.findById (PARAM);
@@ -48,17 +48,17 @@ public class UserRepositoryTest {
 
         // then
         assertThat(actual)
-                .hasSize(1)
+       //         .hasSize(1)
                 .doesNotContainNull();
     }
 
     @Test
     public void should_find_ByLogin() throws Exception {
-        final String PARAM = "login" ;
+        final String PARAM = "tcriple0" ;
         User user = User.builder ()
                 .id (1L)
-                .firstname ("santa")
-                .login ("login")
+                .firstname ("Tera")
+                .login ("tcriple0")
                 .build ();
 
         User find = this.userRepo.findUserByLogin (PARAM);

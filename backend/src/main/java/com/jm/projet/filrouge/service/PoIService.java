@@ -7,6 +7,7 @@ import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.repository.PoIRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class PoIService {
     }
 
     public List<PoIDTO> findAll() {
-        List<PoI> found = poiRepository.findAll();
+        List<PoI> found = poiRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
         return poiMapper.INSTANCE.toListDTO (found) ;
     }
 }
