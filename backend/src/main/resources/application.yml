@@ -24,3 +24,15 @@ spring:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
     username: ${DATABASE_USER:db-user}
     password: ${DATABASE_PASSWORD:delirium}
+users:
+  faces:
+    female:
+      young: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10141-girl-light-skin-tone-icon.png
+      adult: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10159-woman-light-skin-tone-icon.png
+      older: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10165-older-adult-light-skin-tone-icon.png
+      old: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10177-old-woman-light-skin-tone-icon.png
+    male:
+      young: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10129-child-light-skin-tone-icon.png
+      adult: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10147-adult-light-skin-tone-icon.png
+      older: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10153-man-light-skin-tone-icon.png
+      old: http://icons.iconarchive.com/icons/google/noto-emoji-people-face/128/10171-old-man-light-skin-tone-icon.png
