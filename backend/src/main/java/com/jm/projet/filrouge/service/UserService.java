@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -74,8 +75,22 @@ public class UserService {
         return userMapper.INSTANCE.toDTO (found) ;
     }
 
+    /**
+     *
+     * @param userDTO
+     * @return
+     */
     public UserDTO save(UserDTO userDTO) {
-        return userMapper.INSTANCE.toDTO(userRepository.save(userMapper.INSTANCE.toEntity(userDTO)));
+        // Get the current user
+        User user = this.userRepository.findById(userDTO.getId()).get();
+        // Get the user to save
+        User userToSave = userMapper.INSTANCE.toEntity(userDTO);
+        // Add the not updatable attributes
+        userToSave.setPassword(user.getPassword());
+        userToSave.setDateCreation(user.getDateCreation());
+        userToSave.setAge(this.updateAge(user).getAge());
+
+        return userMapper.INSTANCE.toDTO(userRepository.save(userToSave));
     }
 
     public void delete(Long id) {
@@ -125,45 +140,58 @@ public class UserService {
     @PostConstruct
     @Scheduled(cron="0 0 5 * * *")
     public void updateUserAges() {
-        // Get current date
-        LocalDate endDate = LocalDate.now();
+
         // Get all users
         List<User> users = this.userRepository.findAll();
         for(User user : users) {
-            // Calculate age and update the user
-            LocalDate startDate = user.getBirthday().toLocalDate();
-            long age = ChronoUnit.YEARS.between(startDate, endDate);
-            user.setAge((int) age);
-
-            // Update female age icon
-            if(user.getGender() == User.Gender.F && age > 50) {
-                user.setAvatar(femaleOldIcon);
-            }
-            if(user.getGender() == User.Gender.F && age <= 50) {
-                user.setAvatar(femaleOlderIcon);
-            }
-            if(user.getGender() == User.Gender.F && age <= 35) {
-                user.setAvatar(femaleAdultIcon);
-            }
-            if(user.getGender() == User.Gender.F && age <= 25) {
-                user.setAvatar(femaleYoungIcon);
-            }
-            // Update male age icon
-            if(user.getGender() == User.Gender.M && age > 50) {
-                user.setAvatar(maleOldIcon);
-            }
-            if(user.getGender() == User.Gender.M && age <= 50) {
-                user.setAvatar(maleOlderIcon);
-            }
-            if(user.getGender() == User.Gender.M && age <= 35) {
-                user.setAvatar(maleAdultIcon);
-            }
-            if(user.getGender() == User.Gender.M && age <= 25) {
-                user.setAvatar(maleYoungIcon);
-            }
+            this.updateAge(user);
             // Save the user into the db
             this.userRepository.saveAndFlush(user);
         }
+    }
+
+    /**
+     * Uodate the age and the default avatar of a user
+     *
+     * @param user
+     * @return
+     */
+    private User updateAge(User user) {
+        // Get current date
+        LocalDate endDate = LocalDate.now();
+        // Calculate age and update the user
+        LocalDate startDate = user.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();;
+        long age = ChronoUnit.YEARS.between(startDate, endDate);
+        user.setAge((int) age);
+
+        // Update female age icon
+        if(user.getGender() == User.Gender.F && age > 50) {
+            user.setAvatar(femaleOldIcon);
+        }
+        if(user.getGender() == User.Gender.F && age <= 50) {
+            user.setAvatar(femaleOlderIcon);
+        }
+        if(user.getGender() == User.Gender.F && age <= 35) {
+            user.setAvatar(femaleAdultIcon);
+        }
+        if(user.getGender() == User.Gender.F && age <= 25) {
+            user.setAvatar(femaleYoungIcon);
+        }
+        // Update male age icon
+        if(user.getGender() == User.Gender.M && age > 50) {
+            user.setAvatar(maleOldIcon);
+        }
+        if(user.getGender() == User.Gender.M && age <= 50) {
+            user.setAvatar(maleOlderIcon);
+        }
+        if(user.getGender() == User.Gender.M && age <= 35) {
+            user.setAvatar(maleAdultIcon);
+        }
+        if(user.getGender() == User.Gender.M && age <= 25) {
+            user.setAvatar(maleYoungIcon);
+        }
+
+        return user;
     }
 
 }

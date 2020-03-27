@@ -6,6 +6,8 @@ import com.jm.projet.filrouge.dto.RegionDTO;
 import com.jm.projet.filrouge.model.PoI;
 import com.jm.projet.filrouge.model.Region;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;

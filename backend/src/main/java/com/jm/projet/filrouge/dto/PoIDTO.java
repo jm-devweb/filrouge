@@ -35,9 +35,6 @@ public class PoIDTO {
             value = "Name of POI")
     private String name;
 
-    private List<User> users;
-
-    private List<Trip> trips;
 
 
 }

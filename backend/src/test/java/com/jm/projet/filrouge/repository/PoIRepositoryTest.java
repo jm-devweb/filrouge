@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,8 +36,8 @@ public class PoIRepositoryTest {
         PoI poi = PoI.builder ( )
                 .id (1L)
                 .name ("Cinéma")
-                .trips (new ArrayList<Trip> ( ))
-                .users (new ArrayList<User> ( ))
+                .trips (new HashSet<Trip> ( ))
+                .users (new HashSet<User>( ))
                 .build ( );
 
         Optional<PoI> find = this.poiRepo.findById (PARAM);

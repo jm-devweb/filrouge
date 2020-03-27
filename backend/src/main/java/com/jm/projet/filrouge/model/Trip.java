@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
+import java.util.Set;
 
 @Table(name="trip")
 @AttributeOverride(name = "id", column = @Column(name = "ID_TRIP"))
@@ -46,7 +47,7 @@ public class Trip implements Serializable {
     private User promoteur;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<User> users;
+    private Set<User> users;
 
     @ManyToOne
     private City city;

@@ -38,9 +38,9 @@ public class UserDTO {
 
     private String description;
 
-    private Date birthday;
+    private String birthday;
 
-    private Date dateCreation;
+    private String dateCreation;
 
     private Integer age;
 
