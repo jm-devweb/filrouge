@@ -82,15 +82,16 @@ public class UserService {
      */
     public UserDTO save(UserDTO userDTO) {
         // Get the current user
-        User user = this.userRepository.findById(userDTO.getId()).get();
+        Optional<User> user = this.userRepository.findById (userDTO.getId ( ));
         // Get the user to save
-        User userToSave = userMapper.INSTANCE.toEntity(userDTO);
+        User userToSave = userMapper.INSTANCE.toEntity (userDTO);
         // Add the not updatable attributes
-        userToSave.setPassword(user.getPassword());
-        userToSave.setDateCreation(user.getDateCreation());
-        userToSave.setAge(this.updateAge(user).getAge());
-
-        return userMapper.INSTANCE.toDTO(userRepository.save(userToSave));
+        if (user.isPresent ( )) {
+            userToSave.setPassword (user.get ( ).getPassword ( ));
+            userToSave.setDateCreation (user.get ( ).getDateCreation ( ));
+            userToSave.setAge (this.updateAge (user.get ( )).getAge ( ));
+        }
+        return userMapper.INSTANCE.toDTO (userRepository.save (userToSave));
     }
 
     public void delete(Long id) {
