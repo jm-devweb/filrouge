@@ -18,7 +18,10 @@ import java.util.List;
 public interface UserMapper extends EntityDTOMapper<User, UserDTO> {
     UserMapper INSTANCE = Mappers.getMapper( UserMapper.class );
 
+    @Mapping(target = "birthday", source = "dto.birthday", dateFormat = "yyyy-MM-dd")
     User toEntity(UserDTO dto);
+
+    @Mapping(target = "birthday", source = "entity.birthday", dateFormat = "yyyy-MM-dd")
     UserDTO toDTO(User entity);
 
     List<UserDTO> toListDTO(Page<User> entity);

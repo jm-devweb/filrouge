@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
@@ -131,7 +132,8 @@ public class UserService {
         List<User> users = this.userRepository.findAll();
         for(User user : users) {
             // Calculate age and update the user
-            LocalDate startDate = user.getBirthday().toLocalDate();
+            LocalDate startDate =  user.getBirthday().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
             long age = ChronoUnit.YEARS.between(startDate, endDate);
             user.setAge((int) age);
 

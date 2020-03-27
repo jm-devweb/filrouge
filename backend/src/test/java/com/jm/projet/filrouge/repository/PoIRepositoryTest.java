@@ -35,13 +35,11 @@ public class PoIRepositoryTest {
         PoI poi = PoI.builder ( )
                 .id (1L)
                 .name ("Cinéma")
-                .trips (new ArrayList<Trip> ( ))
-                .users (new ArrayList<User> ( ))
                 .build ( );
 
         Optional<PoI> find = this.poiRepo.findById (PARAM);
 
-        assertThat (find.get ( ).toString ( )).isEqualTo (poi.toString ( ));
+        assertThat (find.get ( ).getName ()).isEqualTo (poi.getName ());
     }
 
 

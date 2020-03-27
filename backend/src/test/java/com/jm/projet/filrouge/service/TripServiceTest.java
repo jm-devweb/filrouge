@@ -6,6 +6,7 @@ import com.jm.projet.filrouge.mapper.TripMapper;
 import com.jm.projet.filrouge.model.Region;
 import com.jm.projet.filrouge.model.Trip;
 import com.jm.projet.filrouge.repository.TripRepository;
+import com.jm.projet.filrouge.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,12 +28,15 @@ public class TripServiceTest {
     @Mock
     TripRepository objectRepo;
 
+    @Mock
+    UserRepository userRepo;
+
     @Autowired
     TripMapper objectMapper ;
 
     @BeforeEach
     public  void SetUp() {
-        this.objectService = new TripService(objectRepo, objectMapper);
+        this.objectService = new TripService(objectRepo,userRepo, objectMapper);
     }
 
     @Test
@@ -51,7 +55,7 @@ public class TripServiceTest {
         Optional<TripDTO> actualObject = objectService.findById (1L);
 
         // then
-   //     assertThat(actualObject.get ()).isEqualTo(objectMapper.INSTANCE.toDTO (expectedObject));
+        assertThat(actualObject.get ()).isEqualTo(objectMapper.INSTANCE.toDTO (expectedObject));
     }
 
     @Test
@@ -65,4 +69,27 @@ public class TripServiceTest {
         // then
         assertThat(actualObject).isEmpty ();
     }
+
+
+/*    @Test
+    public void whenRegisterNewUser_thenReturnTrip() {
+        // given
+        final Long PARAM = 1L ;
+
+        Trip expectedObject = Trip.builder()
+                .id (1L)
+                .name ("Cinéma : les tontons ...")
+                .build ();
+
+        doReturn(Optional.of(expectedObject)).when(objectRepo).save (expectedObject);
+
+        // when
+        Optional<TripDTO> actualObject = objectService.registerService (1L,1L);
+
+        System.out.println (actualObject );
+        // then
+        assertThat(actualObject).isEmpty();
+      // assertThat(actualObject.get ()).isEqualTo(objectMapper.INSTANCE.toDTO (expectedObject));
+    }*/
+
 }

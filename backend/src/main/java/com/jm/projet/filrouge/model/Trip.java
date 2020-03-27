@@ -1,23 +1,22 @@
 package com.jm.projet.filrouge.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Date;
-import java.sql.Time;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
-@Table(name="trip")
+@Table(name = "trip")
 @AttributeOverride(name = "id", column = @Column(name = "ID_TRIP"))
 @Data
 @Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"users"})
+@ToString(exclude = {"users"})
 public class Trip implements Serializable {
 
     @Id
@@ -31,10 +30,10 @@ public class Trip implements Serializable {
     private Date dateTrip;
 
     @Column(name = "time_start", nullable = false)
-    private Time timeStart;
+    private Date timeStart;
 
     @Column(name = "time_end", nullable = false)
-      private Time timeEnd;
+    private Date timeEnd;
 
     @Column(name = "nb_person", nullable = false)
     private Integer nbPerson;
@@ -46,13 +45,13 @@ public class Trip implements Serializable {
     private User promoteur;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<User> users;
+    private Set<User> users;
 
     @ManyToOne
     private City city;
 
     @ManyToOne
-    private PoI poi ;
+    private PoI poi;
 
     @Column(name = "age_min")
     private Integer ageMin;
@@ -60,4 +59,15 @@ public class Trip implements Serializable {
     @Column(name = "age_max")
     private Integer ageMax;
 
+    public boolean register(User user) {
+        boolean result = this.users.contains (user);
+        if (result == false) this.users.add (user);
+        return !result;
+    }
+
+    public boolean unregister(User user) {
+        boolean result = this.users.contains (user);
+        if (result == true) this.users.remove (user);
+        return result;
+    }
 }

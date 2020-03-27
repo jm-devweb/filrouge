@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Table(name="poi")
 @AttributeOverride(name = "id", column = @Column(name = "ID_POI"))
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"users", "trips"})
 public class PoI  {
 
     @Id
@@ -22,11 +24,12 @@ public class PoI  {
     @Column(name = "NAME", length = 255, nullable = false, unique = true)
     private String name;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    //@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<User> users;
+    @ManyToMany(mappedBy = "pois", fetch = FetchType.EAGER)
+    private Set<User> users;
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Trip> trips;
+    private Set<Trip> trips;
 }

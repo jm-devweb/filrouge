@@ -33,7 +33,7 @@ public class UserRepositoryTest {
         final Long PARAM = 1L ;
         User user = User.builder ()
                 .id (1L)
-                .firstname ("Tera")
+                .firstname ("Georas")
                 .build ();
 
         Optional<User> find = this.userRepo.findById (PARAM);
@@ -54,11 +54,11 @@ public class UserRepositoryTest {
 
     @Test
     public void should_find_ByLogin() throws Exception {
-        final String PARAM = "tcriple0" ;
+        final String PARAM = "skeiling1" ;
         User user = User.builder ()
                 .id (1L)
-                .firstname ("Tera")
-                .login ("tcriple0")
+                .firstname ("Saloma")
+                .login ("skeiling1")
                 .build ();
 
         User find = this.userRepo.findUserByLogin (PARAM);

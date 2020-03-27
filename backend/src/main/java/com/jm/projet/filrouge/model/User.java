@@ -1,13 +1,11 @@
 package com.jm.projet.filrouge.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Table(name="myuser")
 @AttributeOverride(name = "id", column = @Column(name = "ID_USER"))
@@ -16,6 +14,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(exclude = {"pois"})
+@ToString(exclude = {"pois"})
 public class User {
 
     @Id
@@ -56,7 +56,7 @@ public class User {
     private City city;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<PoI> pois;
+    private Set<PoI> pois;
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
