@@ -3,6 +3,7 @@ package com.jm.projet.filrouge.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +15,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(of= {"id"})
 @ToString(exclude = {"users", "trips"})
 public class PoI  {
 

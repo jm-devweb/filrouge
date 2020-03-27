@@ -3,7 +3,9 @@ package com.jm.projet.filrouge.model;
 import lombok.*;
 
 import javax.persistence.*;
+
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -14,8 +16,7 @@ import java.util.Set;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"pois"})
-@ToString(exclude = {"pois"})
+@EqualsAndHashCode(of= {"id"})
 public class User {
 
     @Id
@@ -55,8 +56,13 @@ public class User {
     @ManyToOne
     private City city;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private Set<PoI> pois;
+    //@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "poi_users",
+            joinColumns = @JoinColumn(name = "users_id_user"),
+            inverseJoinColumns = @JoinColumn(name = "poi_id_poi"))
+    private Set<PoI> pois = new HashSet<>();
 
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
