@@ -97,7 +97,7 @@ class FilrougeApplicationTests {
         ResponseEntity<List<DepartmentDTO>> responseEntity = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<> (null), typeRef);
         List<DepartmentDTO> objectList = responseEntity.getBody();
         DepartmentDTO object = objectList.get(0);
-        System.out.println (object );
+
         assertThat(object.getName ()).isEqualTo (RESULT);
     }
 

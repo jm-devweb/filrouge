@@ -20,6 +20,6 @@ public interface PoIMapper  extends EntityDTOMapper<PoI, PoIDTO> {
     PoIDTO toDTO(PoI entity);
 
     List<PoIDTO> toListDTO(List<PoI> entity);
-//    List<PoI> toListEntity(List<PoIDTO> dto);
+    List<PoI> toListEntity(List<PoIDTO> dto);
 
 }

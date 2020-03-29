@@ -18,7 +18,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
 

@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.Date;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 @RequestMapping(value = "/api/trips")
@@ -46,7 +45,7 @@ public class TripController {
                     @ApiResponse(code = 501, message = "Successful operation")
             })
     public ResponseEntity getAll() {
-        return  ResponseEntity.status (HttpStatus.NOT_IMPLEMENTED).build ();
+        return ResponseEntity.status (HttpStatus.NOT_IMPLEMENTED).build ( );
     }
 
     @GetMapping("/{tripId}")
@@ -62,51 +61,47 @@ public class TripController {
             })
     public ResponseEntity<TripDTO> getTripById(
             @PathVariable(value = "tripId")
-                    Long tripId)  {
+                    Long tripId) {
         Optional<TripDTO> tripDTO = tripService.findById (tripId);
 
-        if(tripDTO.isPresent ()) {
-            return ResponseEntity.status(HttpStatus.OK).body(tripDTO.get ());
+        if (tripDTO.isPresent ( )) {
+            return ResponseEntity.status (HttpStatus.OK).body (tripDTO.get ( ));
         }
-        return  ResponseEntity.notFound ().build() ;
+        return ResponseEntity.notFound ( ).build ( );
     }
 
     /**
-     * Filter users
+     * Filter trips
      *
-     * @param pageable the page to get
-     * @param gender the gender to get (optional)
-     * @param ageCategory the age category to get (optional)
-     * @param login the login to get (optional)
-     * @param region the region id to get (optional)
+     * @param pageable   the page to get
+     * @param user       the user => promoteur
+     * @param keywords   the age category to get (optional)
+     * @param startDate  the login to get (optional)
+     * @param poi        the poi id to get (optional)
+     * @param region     the region id to get (optional)
      * @param department the department id to get (optional)
      * @return a page of users
      */
     @GetMapping("/filter")
     public Page<TripDTO> getFilteredTrips(
-            @PageableDefault(size=25, page = 0, direction = Sort.Direction.ASC) Pageable pageable,
+            @PageableDefault(size = 25, page = 0, direction = Sort.Direction.ASC) Pageable pageable,
             @ApiParam(value = "Query param for 'user'") @Valid @RequestParam(value = "user", defaultValue = "0") Long user,
-            @ApiParam(value = "Query param for 'words'") @Valid @RequestParam(value = "words",defaultValue = "") String words,
+            @ApiParam(value = "Query param for 'keywords'") @Valid @RequestParam(value = "keywords", defaultValue = "") String keywords,
 
             @ApiParam(value = "Query param for 'dates'")
             @Valid @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @RequestParam(value ="startDate", defaultValue = "") String startDate,
+            @RequestParam(value = "startDate", defaultValue = "") String startDate,
 
             @ApiParam(value = "Query param for 'poi'") @Valid @RequestParam(value = "poi", defaultValue = "0") Integer poi,
             @ApiParam(value = "Query param for 'region'") @Valid @RequestParam(value = "region", defaultValue = "0") Integer region,
             @ApiParam(value = "Query param for 'department'") @Valid @RequestParam(value = "department", defaultValue = "0") Integer department
     ) throws ParseException {
 
-        Date date = new Date(); ;
-        if(startDate.equals ("")) {
-            date = new Date();
-        }  else {
-            date=new SimpleDateFormat("yyyy-MM-dd").parse(startDate);
-
+        Date date = new Date ( );
+        if (!startDate.equals ("")) {
+            date = new SimpleDateFormat ("yyyy-MM-dd").parse (startDate);
         }
-     //   Date date = Date.valueOf(startDate );
-     //   System.out.println (startDate );
-        return tripService.getFilteredTrips(pageable, poi, region, department,user,words, date);
+        return tripService.getFilteredTrips (pageable, poi, region, department, user, keywords, date);
     }
 
     /**
@@ -119,16 +114,16 @@ public class TripController {
      */
     @GetMapping("/register")
     public ResponseEntity<TripDTO> registerController(
-            @ApiParam(value = "param for 'user'") @Valid @RequestParam(value = "user", defaultValue = "0") long user,
-            @ApiParam(value = "param for 'trip'") @Valid @RequestParam(value = "trip", defaultValue = "0") long trip,
+            @ApiParam(value = "param for 'user'") @Valid @RequestParam(value = "user", defaultValue = "0") Long user,
+            @ApiParam(value = "param for 'trip'") @Valid @RequestParam(value = "trip", defaultValue = "0") Long trip,
             @ApiParam(value = "param for 'register'") @Valid @RequestParam(value = "register", defaultValue = "true") boolean register) {
 
-        Optional<TripDTO> tripDTO = tripService.registerService(Long.valueOf (user),Long.valueOf (trip),register );
+        Optional<TripDTO> tripDTO = tripService.registerService (user, trip, register);
 
-        if(tripDTO.isPresent ()) {
-            return ResponseEntity.status(HttpStatus.OK).body(tripDTO.get ());
+        if (tripDTO.isPresent ( )) {
+            return ResponseEntity.status (HttpStatus.OK).body (tripDTO.get ( ));
         }
-        return  ResponseEntity.notFound ().build() ;
+        return ResponseEntity.notFound ( ).build ( );
     }
 
 

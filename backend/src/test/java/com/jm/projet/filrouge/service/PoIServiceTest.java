@@ -53,7 +53,7 @@ public class PoIServiceTest {
         // when
         List<PoIDTO> actualPoIs = poiService.findAll();
 
-        System.out.println (expectedPoIs );
+
 
         // then
         assertThat(actualPoIs).isEqualTo(poiMapper.INSTANCE.toListDTO (expectedPoIs) );

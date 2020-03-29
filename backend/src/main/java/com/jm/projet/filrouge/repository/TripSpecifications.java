@@ -1,12 +1,14 @@
 package com.jm.projet.filrouge.repository;
 
 import com.jm.projet.filrouge.model.Trip;
+import com.jm.projet.filrouge.model.User;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class TripSpecifications {
 
@@ -68,12 +70,12 @@ public class TripSpecifications {
     }
 
     /**
-     * Check a optional user
+     * Check a optional promoteur
      *
      * @param userId the department to check
      * @return a user specification
      */
-    public static Specification<Trip> hasUserOptional(Long userId) {
+    public static Specification<Trip> hasPromoteurOptional(Long userId) {
 
 
         if(userId == 0){
@@ -86,6 +88,7 @@ public class TripSpecifications {
             };
         }
     }
+
 
     /**
      * Check a optional word

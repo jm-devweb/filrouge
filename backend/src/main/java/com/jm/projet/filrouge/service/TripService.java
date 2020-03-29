@@ -25,12 +25,12 @@ public class TripService {
 
     private final TripRepository tripRepository;
     private final UserRepository userRepository;
-    private final TripMapper objectMapper;
+    private final TripMapper tripMapper;
 
     public Optional<TripDTO> findById(Long tripId) {
         Optional<Trip> found = tripRepository.findById (tripId);
         if (found.isPresent ( )) {
-            return Optional.of (objectMapper.INSTANCE.toDTO (found.get ( )));
+            return Optional.of (tripMapper.INSTANCE.toDTO (found.get ( )));
         }
         return Optional.empty ( );
     }
@@ -52,12 +52,12 @@ public class TripService {
                 where (hasDepartmentOptional (departmentId)
                         .and (hasRegionOptional (regionId))
                         .and (hasPoIOptional (poiId))
-                        .and (hasUserOptional (userId))
-                       .and (hasDateOptional(startDate))
+                        .and (hasPromoteurOptional (userId))
+                        .and (hasDateOptional (startDate))
                         .and ((hasWordsTitleOptional (words)).or (hasWordsDescriptionOptional (words)))
                 ), pageable);
 
-        return tripPage.map (trip -> objectMapper.INSTANCE.toDTO (trip));
+        return tripPage.map (trip -> tripMapper.INSTANCE.toDTO (trip));
     }
 
     /**
@@ -79,10 +79,8 @@ public class TripService {
                 result = thisTrip.register (currentUser.get ( ));
             }
             thisTrip = tripRepository.saveAndFlush (thisTrip);
-            return Optional.of (objectMapper.INSTANCE.toDTO (thisTrip));
+            return Optional.of (tripMapper.INSTANCE.toDTO (thisTrip));
         }
         return Optional.empty ( );
     }
-
-
 }

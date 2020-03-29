@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 
 @Table(name = "trip")
@@ -47,6 +46,7 @@ public class Trip implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<User> users;
 
+    // A tester
     @ManyToOne
     private City city;
 

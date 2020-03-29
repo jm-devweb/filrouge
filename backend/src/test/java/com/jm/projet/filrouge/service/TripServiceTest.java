@@ -86,7 +86,7 @@ public class TripServiceTest {
         // when
         Optional<TripDTO> actualObject = objectService.registerService (1L,1L);
 
-        System.out.println (actualObject );
+
         // then
         assertThat(actualObject).isEmpty();
       // assertThat(actualObject.get ()).isEqualTo(objectMapper.INSTANCE.toDTO (expectedObject));

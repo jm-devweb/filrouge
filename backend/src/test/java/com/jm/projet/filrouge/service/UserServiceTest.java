@@ -90,7 +90,7 @@ public class UserServiceTest {
         assertThat(actualUsers).isEqualTo(userMapper.INSTANCE.toDTO (user));
     }
 
-/*    @Test
+    @Test
     public void should_save_user() {
         User user = User.builder ()
                 .id (1L)
@@ -102,14 +102,13 @@ public class UserServiceTest {
                 .build ();
 
         doReturn(user).when(userRepo).save (user);
-        System.out.println (user );
+
 
         UserDTO actualUsers = userService.save(userMapper.INSTANCE.toDTO (user));
-        System.out.println (actualUsers );
-        System.out.println (user );
+
         // then
         assertThat(userMapper.INSTANCE.toEntity (actualUsers))
                 .isNotNull()
                .isEqualToComparingOnlyGivenFields(user, "id", "firstname");
-    }*/
+    }
 }

@@ -28,10 +28,10 @@ public class PoI  {
 
     //@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    @ManyToMany(mappedBy = "pois", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "pois", fetch = FetchType.LAZY)
     private Set<User> users;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Trip> trips;
 }

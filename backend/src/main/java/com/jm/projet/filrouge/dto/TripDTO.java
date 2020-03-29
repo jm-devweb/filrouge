@@ -9,8 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.util.List;
 
 @ApiModel(value = "Trip", description = "Trip of application")
@@ -25,11 +23,11 @@ public class TripDTO {
 
     private String name;
 
-    private Date dateTrip;
+    private String dateTrip;
 
-    private Time timeStart;
+    private String timeStart;
 
-    private Time timeEnd;
+    private String timeEnd;
 
     private Integer nbPerson;
 

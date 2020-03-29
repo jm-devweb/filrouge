@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.CascadeType;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
 
 @ApiModel(value = "POI", description = "Point of Interest")
 
@@ -34,7 +36,5 @@ public class PoIDTO {
             required = true,
             value = "Name of POI")
     private String name;
-
-
 
 }

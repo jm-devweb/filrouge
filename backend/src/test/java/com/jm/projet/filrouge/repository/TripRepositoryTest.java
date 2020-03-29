@@ -38,11 +38,11 @@ public class TripRepositoryTest {
 
     @Test
     public void should_find_ById_ReturnTrip() throws Exception {
-        final Long PARAM = 1L ;
+        final Long PARAM = 2L ;
 
         Trip object = Trip.builder()
-                .id (1L)
-                .name ("Cinéma : les tontons ...")
+                .id (PARAM)
+                .name ("Inland Empire")
                 .build ();
         Optional<Trip> find = this.objectRepo.findById (PARAM);
         assertThat(find.get().getName ()).isEqualTo(object.getName ());
