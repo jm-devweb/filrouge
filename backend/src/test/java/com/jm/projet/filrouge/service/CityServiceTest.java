@@ -72,7 +72,7 @@ public class CityServiceTest {
                 .name("Paris")
                 .build();
         List<City> expectedCity = Arrays.asList(city);
-        doReturn(expectedCity).when(cityRepo).findCitiesByDepartmentId (1L);
+        doReturn(expectedCity).when(cityRepo).findCitiesByDepartmentIdOrderByName (1L);
 
         // when
         List<CityDTO> actualCity = cityService.findCitiesByDepartmentId (1L);

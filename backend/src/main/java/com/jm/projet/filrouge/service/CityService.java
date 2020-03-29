@@ -35,7 +35,7 @@ public class CityService {
     }
 
     public List<CityDTO> findCitiesByDepartmentId(Long id) {
-        List<City> found = cityRepository.findCitiesByDepartmentId (id);
+        List<City> found = cityRepository.findCitiesByDepartmentIdOrderByName (id);
         return cityMapper.INSTANCE.toListDTO (found) ;
     }
 

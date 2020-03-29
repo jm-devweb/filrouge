@@ -118,7 +118,8 @@ public class UserController {
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @Valid @RequestBody UserDTO userDTO) {
         UserDTO testUserDTO = userService.findById (userDTO.getId ( ));
-        return Objects.isNull (testUserDTO) ? ResponseEntity.badRequest ( ).build ( ) : ResponseEntity.ok (userService.save (userDTO));
+
+        return Objects.isNull (testUserDTO) ? ResponseEntity.notFound ( ).build ( ) : ResponseEntity.ok (userService.save (userDTO));
     }
 
     @DeleteMapping("/{id}")

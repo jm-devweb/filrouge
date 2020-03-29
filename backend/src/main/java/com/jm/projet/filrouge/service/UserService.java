@@ -76,6 +76,7 @@ public class UserService {
     }
 
     /**
+     *Save User
      *
      * @param userDTO
      * @return
@@ -141,7 +142,6 @@ public class UserService {
     @PostConstruct
     @Scheduled(cron="0 0 5 * * *")
     public void updateUserAges() {
-
         // Get all users
         List<User> users = this.userRepository.findAll();
         for(User user : users) {

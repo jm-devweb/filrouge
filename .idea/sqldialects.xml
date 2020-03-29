@@ -4,5 +4,8 @@
     <file url="file://$PROJECT_DIR$/backend/src/main/resources/1-data-postgres.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/backend/src/main/resources/2-users.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/backend/src/main/resources/3-trip.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/src/main/resources/4-trips.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/src/main/resources/5-users_poi.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/backend/src/main/resources/6-trip_users.sql" dialect="PostgreSQL" />
   </component>
 </project>
