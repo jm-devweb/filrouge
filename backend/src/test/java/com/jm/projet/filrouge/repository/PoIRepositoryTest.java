@@ -36,7 +36,7 @@ public class PoIRepositoryTest {
         PoI poi = PoI.builder ( )
                 .id (1L)
                 .name ("Cinéma")
-                .trips (new HashSet<Trip> ( ))
+ //               .trips (new HashSet<Trip> ( ))
                 .users (new HashSet<User>( ))
                 .build ( );
 

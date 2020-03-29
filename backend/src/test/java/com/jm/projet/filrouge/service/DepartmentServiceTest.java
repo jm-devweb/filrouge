@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.Arrays;
@@ -45,7 +46,7 @@ public class DepartmentServiceTest {
                 .region (new Region(1L,"Auvergne-Rhône-Alpes"))
                 .build();
         List<Department> expectedDepartments = Arrays.asList(department);
-        doReturn(expectedDepartments).when(departmentRepo).findAll();
+        doReturn(expectedDepartments).when(departmentRepo).findAll(Sort.by(Sort.Direction.ASC, "name"));
 
         // when
         List<DepartmentDTO> actualDepartments = departmentService.findAll();

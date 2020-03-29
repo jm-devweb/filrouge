@@ -26,12 +26,11 @@ public class PoI  {
     @Column(name = "NAME", length = 255, nullable = false, unique = true)
     private String name;
 
-    //@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     @ManyToMany(mappedBy = "pois", fetch = FetchType.LAZY)
     private Set<User> users;
 
-    @JsonIgnore
+/*    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Trip> trips;
+    private Set<Trip> trips;*/
 }

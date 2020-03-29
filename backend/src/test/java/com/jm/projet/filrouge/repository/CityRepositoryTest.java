@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class CityRepositoryTest {
     @Test
     public void should_find_all_cities() throws Exception {
         // when
-        Iterable<City> actual = this.cityRepo.findAll();
+        Iterable<City> actual = this.cityRepo.findAll(Sort.by(Sort.Direction.ASC, "name"));
 
         // then
         assertThat(actual)
@@ -47,9 +48,9 @@ public class CityRepositoryTest {
     }
 
     @Test
-    public void should_find_all_citiesByRegionId() throws Exception {
+    public void should_find_all_citiesByDepartmentId() throws Exception {
         final Long PARAM = 1L ;
-        final String RESULT = "OZAN" ;
+        final String RESULT = "AMBERIEU-EN-BUGEY" ;
 
         List<City> cities = this.cityRepo.findCitiesByDepartmentIdOrderByName(PARAM);
         assertThat(cities.get(0).getName ()).isEqualTo(RESULT);
