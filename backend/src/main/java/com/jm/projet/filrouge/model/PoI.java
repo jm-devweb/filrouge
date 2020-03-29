@@ -30,7 +30,4 @@ public class PoI  {
     @ManyToMany(mappedBy = "pois", fetch = FetchType.LAZY)
     private Set<User> users;
 
-/*    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Trip> trips;*/
 }

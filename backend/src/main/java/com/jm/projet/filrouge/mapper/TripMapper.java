@@ -17,14 +17,14 @@ public interface TripMapper extends EntityDTOMapper<Trip, TripDTO> {
     TripMapper INSTANCE = Mappers.getMapper( TripMapper.class );
 
     @Mapping(target = "dateTrip", source = "dto.dateTrip", dateFormat = "yyyy-MM-dd")
-    @Mapping(target = "timeStart", source = "dto.timeStart", dateFormat = "HH-mm")
-    @Mapping(target = "timeEnd", source = "dto.timeEnd", dateFormat = "HH-mm")
+    @Mapping(target = "timeStart", source = "dto.timeStart", dateFormat = "HH:mm")
+    @Mapping(target = "timeEnd", source = "dto.timeEnd", dateFormat = "HH:mm")
     Trip toEntity(TripDTO dto);
 
 
     @Mapping(target = "dateTrip", source = "entity.dateTrip", dateFormat = "yyyy-MM-dd")
-    @Mapping(target = "timeStart", source = "entity.timeStart", dateFormat = "HH-mm")
-    @Mapping(target = "timeEnd", source = "entity.timeEnd", dateFormat = "HH-mm")
+    @Mapping(target = "timeStart", source = "entity.timeStart", dateFormat = "HH:mm")
+    @Mapping(target = "timeEnd", source = "entity.timeEnd", dateFormat = "HH:mm")
     TripDTO toDTO(Trip entity);
 
     List<TripDTO> toListDTO(Page<Trip> entity);

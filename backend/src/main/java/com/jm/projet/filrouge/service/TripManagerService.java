@@ -32,16 +32,16 @@ public class TripManagerService {
      * @return
      */
     public Optional<TripDTO> create(final TripManager tripManager) throws ParseException {
-        Date dateTrip = new SimpleDateFormat ("yyyy-MM-dd").parse(tripManager.getDateTrip ( ));
-        Date timeStart = new SimpleDateFormat ("HH-mm").parse(tripManager.getTimeStart ());
-        Date timeEnd = new SimpleDateFormat ("HH-mm").parse(tripManager.getTimeEnd ());
+        Date dateTrip = new SimpleDateFormat ("yyyy-MM-dd").parse (tripManager.getDateTrip ( ));
+        Date timeStart = new SimpleDateFormat ("HH-mm").parse (tripManager.getTimeStart ( ));
+        Date timeEnd = new SimpleDateFormat ("HH-mm").parse (tripManager.getTimeEnd ( ));
 
         final Optional<City> currentCity = cityRepository.findById (tripManager.getCityId ( ));
         final Optional<PoI> currentPoI = poiRepository.findById (tripManager.getPoiId ( ));
         final Optional<User> currentPromoteur = userRepository.findById (tripManager.getPromoteurId ( ));
         if (currentPromoteur.isPresent ( ) && currentCity.isPresent ( ) && currentPoI.isPresent ( )) {
             Trip tripToSave = Trip.builder ( )
-                //    .id (1L)
+                    //    .id (1L)
                     .name (tripManager.getName ( ))
                     .dateTrip (dateTrip)
                     .timeStart (timeStart)
@@ -50,26 +50,44 @@ public class TripManagerService {
                     .description (tripManager.getDescription ( ))
                     .ageMin (tripManager.getAgeMin ( ))
                     .ageMax (tripManager.getAgeMax ( ))
-                    .city (currentCity.get ())
-                    .poi (currentPoI.get ())
-                    .promoteur (currentPromoteur.get ())
+                    .city (currentCity.get ( ))
+                    .poi (currentPoI.get ( ))
+                    .promoteur (currentPromoteur.get ( ))
                     .build ( );
-            System.out.println (tripToSave );
             return Optional.of (tripMapper.INSTANCE.toDTO (tripRepository.save (tripToSave)));
         }
-        return Optional.empty ();
+        return Optional.empty ( );
     }
 
-
-    public Optional<TripDTO> update(TripDTO tripDTO) {
-
-
-        Optional<Trip> tripToTest = this.tripRepository.findById (tripDTO.getId ( ));
+    public Optional<TripDTO> update(final TripManager tripManager) throws ParseException {
+        Optional<Trip> tripToTest = this.tripRepository.findById ( tripManager.getId ( ));
         if (tripToTest.isPresent ( )) {
-            // Get the current trip
-            Trip tripToSave = tripMapper.INSTANCE.toEntity (tripDTO);
-            tripToSave.setUsers (tripToTest.get ( ).getUsers ( ));
-            return Optional.of (tripMapper.INSTANCE.toDTO (tripRepository.save (tripToSave)));
+            Date dateTrip = new SimpleDateFormat ("yyyy-MM-dd").parse (tripManager.getDateTrip ( ));
+            Date timeStart = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").parse (tripManager.getTimeStart ( ));
+            Date timeEnd = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss").parse (tripManager.getTimeEnd ( ));
+            System.out.println (tripManager.getTimeStart ( ) + ' ' + timeStart );
+
+            final Optional<City> currentCity = cityRepository.findById (tripManager.getCityId ( ));
+            final Optional<PoI> currentPoI = poiRepository.findById (tripManager.getPoiId ( ));
+            final Optional<User> currentPromoteur = userRepository.findById (tripManager.getPromoteurId ( ));
+            if (currentPromoteur.isPresent ( ) && currentCity.isPresent ( ) && currentPoI.isPresent ( )) {
+                Trip tripToSave = Trip.builder ( )
+                        .id (tripManager.getId ( ))
+                        .name (tripManager.getName ( ))
+                        .dateTrip (dateTrip)
+                        .timeStart (timeStart)
+                        .timeEnd (timeEnd)
+                        .nbPerson (tripManager.getNbPerson ( ))
+                        .description (tripManager.getDescription ( ))
+                        .ageMin (tripManager.getAgeMin ( ))
+                        .ageMax (tripManager.getAgeMax ( ))
+                        .city (currentCity.get ( ))
+                        .poi (currentPoI.get ( ))
+                        .promoteur (currentPromoteur.get ( ))
+                        .build ( );
+
+                return Optional.of (tripMapper.INSTANCE.toDTO (tripRepository.save (tripToSave)));
+            }
         }
         return Optional.empty ( );
     }

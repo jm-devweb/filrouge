@@ -35,8 +35,8 @@ public class TripManagerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TripDTO> update(@PathVariable Long id, @Valid @RequestBody TripDTO tripDTO) {
-        Optional<TripDTO> tripToUpdate = tripManagerService.update (tripDTO);
+    public ResponseEntity<TripDTO> update(@PathVariable Long id, @Valid @RequestBody TripManager tripManager) throws ParseException {
+        Optional<TripDTO> tripToUpdate = tripManagerService.update (tripManager);
         if (tripToUpdate.isPresent ( )) {
             return ResponseEntity.ok ( ).body (tripToUpdate.get () );
         }

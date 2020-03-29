@@ -54,7 +54,6 @@ public class User {
     @ManyToOne
     private City city;
 
-    //@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "poi_users",

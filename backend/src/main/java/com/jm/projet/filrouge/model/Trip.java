@@ -43,7 +43,7 @@ public class Trip implements Serializable {
     @ManyToOne
     private User promoteur;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> users;
 
     // A tester
