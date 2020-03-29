@@ -76,6 +76,7 @@ public class UserService {
     }
 
     /**
+     *Save User
      *
      * @param userDTO
      * @return
@@ -84,7 +85,7 @@ public class UserService {
         // Get the current user
         Optional<User> user = this.userRepository.findById (userDTO.getId ( ));
         // Get the user to save
-        User userToSave = userMapper.INSTANCE.toEntity (userDTO);
+        User userToSave = userMapper.INSTANCE.toEntity(userDTO);
         // Add the not updatable attributes
         if (user.isPresent ( )) {
             userToSave.setPassword (user.get ( ).getPassword ( ));
@@ -141,7 +142,6 @@ public class UserService {
     @PostConstruct
     @Scheduled(cron="0 0 5 * * *")
     public void updateUserAges() {
-
         // Get all users
         List<User> users = this.userRepository.findAll();
         for(User user : users) {

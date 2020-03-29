@@ -51,7 +51,7 @@ public class CityRepositoryTest {
         final Long PARAM = 1L ;
         final String RESULT = "OZAN" ;
 
-        List<City> cities = this.cityRepo.findCitiesByDepartmentId(PARAM);
+        List<City> cities = this.cityRepo.findCitiesByDepartmentIdOrderByName(PARAM);
         assertThat(cities.get(0).getName ()).isEqualTo(RESULT);
     }
 

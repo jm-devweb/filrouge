@@ -28,7 +28,7 @@ public class PoI  {
 
     //@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
-    @ManyToMany(mappedBy = "pois", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "pois", fetch = FetchType.LAZY)
     private Set<User> users;
 
     @JsonIgnore

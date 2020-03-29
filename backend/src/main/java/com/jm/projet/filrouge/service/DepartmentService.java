@@ -6,6 +6,7 @@ import com.jm.projet.filrouge.model.Department;
 import com.jm.projet.filrouge.repository.DepartmentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class DepartmentService {
     }
 
     public List<DepartmentDTO> findAll() {
-        List<Department> found = departmentRepository.findAll();
+        List<Department> found = departmentRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
         return departmentMapper.INSTANCE.toListDTO (found) ;
     }
 
